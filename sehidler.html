@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şəhidlərimiz</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            color: #f1e8d8; font-family: Georgia, "Times New Roman", serif;
+            background-color: #14100c;
+            /* fon1 şəkli (sehidler.html ilə eyni qovluqda). Uzantı hansıdırsa o işləyir */
+            background-image:
+                linear-gradient(rgba(10, 8, 6, 0.35), rgba(10, 8, 6, 0.35)),   /* yazı oxunsun deyə yüngül qaranlıq */
+                url("fon1.jpg"), url("fon1.jpeg"), url("fon1.png"), url("fon1.webp");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* ===== Baş zolağı (Zəfər Yolu ilə eyni) ===== */
+        .bash-zolaq {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            padding: 0 clamp(12px, 3vw, 48px);
+            height: clamp(48px, 4vw, 72px);
+            background: #1e1812; border-bottom: 3px solid #e8c660;
+            box-shadow: 0 3px 10px rgba(0,0,0,.4);
+        }
+        .logo { color: #fff; font-size: clamp(18px, 1.8vw, 30px); font-weight: bold; letter-spacing: .04em; text-decoration: none; white-space: nowrap; }
+        .logo span { color: #e8c660; }
+        .bash-zolaq nav { display: flex; gap: clamp(12px, 2vw, 36px); }
+        .bash-zolaq nav a { color: #f1e8d8; font-size: clamp(13px, 1.2vw, 20px); text-decoration: none; padding: 6px 2px; border-bottom: 2px solid transparent; transition: .2s; }
+        .bash-zolaq nav a:hover, .bash-zolaq nav a.aktiv { color: #e8c660; border-bottom-color: #e8c660; }
+
+        /* ===== Başlıq ===== */
+        .bashliq { text-align: center; padding: clamp(28px, 5vw, 70px) 16px clamp(16px, 2vw, 30px); }
+        .bashliq h1 { color: #fff; font-size: clamp(32px, 5.5vw, 88px); letter-spacing: .03em; }
+        .bashliq p { margin-top: 10px; color: #e8c660; font-size: clamp(13px, 1.6vw, 26px); letter-spacing: .14em; font-weight: bold; }
+
+        /* ===== Şəhid kartları ===== */
+        .tor {
+            width: min(1500px, 96%);
+            margin: 24px auto 0;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);   /* 6 şəkil yan-yana */
+            gap: clamp(12px, 1.6vw, 28px);
+        }
+        @media (max-width: 1000px) { .tor { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 560px)  { .tor { grid-template-columns: repeat(2, 1fr); } }
+
+        /* Çərçivəsiz kart: yalnız şəkil + ad + tarix. Şəkilin özü düymədir */
+        .kart { display: flex; flex-direction: column; gap: 10px; cursor: pointer; text-align: center; }
+        .kart.gizli { display: none; }
+        .kart.yeni { animation: gel .45s ease-out; }
+        @keyframes gel { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+        .kart .sekil { aspect-ratio: 3 / 4; overflow: hidden; border-radius: 4px; }
+        .kart .sekil img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s, filter .3s; }
+        .kart:hover .sekil img, .kart:focus-visible .sekil img { transform: scale(1.06); filter: brightness(1.1); }
+        .kart:focus-visible { outline: none; }
+        .kart .ad { color: #fff; font-size: clamp(13px, 1.15vw, 19px); font-weight: bold; line-height: 1.25; }
+        .kart .iller { color: #e8c660; font-size: clamp(11px, .95vw, 15px); letter-spacing: .03em; }
+
+        .duyme {
+            display: inline-block; padding: 11px 26px; font-family: inherit; font-size: 17px; font-weight: bold;
+            color: #fff; background: #1e1812; border: 3px solid #e8c660; border-radius: 8px; cursor: pointer;
+            transition: transform .2s, box-shadow .2s;
+        }
+        .duyme:hover { transform: scale(1.06); box-shadow: 0 0 18px rgba(232,198,96,.9); }
+
+        .daha { text-align: center; padding: 40px 16px 80px; }
+        .daha .duyme { font-size: 20px; padding: 14px 40px; }
+        .daha .say { margin-top: 12px; color: #bdb3a2; font-size: 15px; }
+
+        /* ===== Ətraflı pəncərə ===== */
+        .perde {
+            position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.85);
+            display: flex; align-items: center; justify-content: center; padding: 16px;
+            opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s;
+        }
+        .perde.ach { opacity: 1; visibility: visible; }
+        .pencere {
+            position: relative; width: min(1000px, 100%); max-height: 92vh; overflow-y: auto;
+            background: #1e1812; border: 3px solid #e8c660; border-radius: 12px;
+            padding: clamp(20px, 3vw, 40px);
+            transform: scale(.15); transition: transform .3s ease-out;
+        }
+        .perde.ach .pencere { transform: scale(1); }
+        .bagla { position: absolute; top: 10px; right: 16px; background: none; border: none; color: #fff; font-size: 36px; line-height: 1; cursor: pointer; z-index: 2; }
+
+        .p-ust { display: grid; grid-template-columns: minmax(180px, 300px) 1fr; gap: clamp(18px, 3vw, 36px); align-items: start; }
+        @media (max-width: 700px) { .p-ust { grid-template-columns: 1fr; } .p-ust .p-esas { max-width: 300px; margin: 0 auto; } }
+        .p-esas img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 3px solid #e8c660; border-radius: 10px; }
+        .pencere h2 { color: #e8c660; font-size: clamp(26px, 3.4vw, 46px); line-height: 1.15; padding-right: 30px; }
+        .p-tarix { margin: 8px 0 16px; color: #bdb3a2; font-size: clamp(15px, 1.4vw, 20px); }
+        .p-yazi { font-size: clamp(15px, 1.3vw, 19px); line-height: 1.7; white-space: pre-line; }
+
+        .p-blok { margin-top: 26px; }
+        .p-blok h3 { color: #e8c660; font-size: clamp(18px, 1.8vw, 26px); letter-spacing: .05em; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid rgba(232,198,96,.4); }
+        .aile { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+        .aile div { padding: 10px 14px; background: rgba(232,198,96,.08); border-left: 4px solid #e8c660; border-radius: 0 8px 8px 0; }
+        .aile b { display: block; color: #e8c660; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; font-weight: normal; }
+        .aile span { font-size: 18px; color: #fff; }
+
+        .qaleri { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+        .qaleri img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 2px solid #e8c660; border-radius: 8px; cursor: zoom-in; }
+
+        /* Böyük şəkil */
+        .boyuk { position: fixed; inset: 0; z-index: 1200; background: rgba(0,0,0,.94); display: none; align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; }
+        .boyuk.ach { display: flex; }
+        .boyuk img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+        /* ===== Məlumat cədvəli (bölmələr) ===== */
+        .bolme { margin-top: 26px; }
+        .bolme-bash { background: #3d4f5c; color: #fff; text-align: center; font-weight: bold; padding: 8px 12px; font-size: clamp(15px, 1.4vw, 20px); }
+        .setir { display: grid; grid-template-columns: minmax(130px, 220px) 1fr; gap: 6px 20px; padding: 12px 6px; border-bottom: 1px solid rgba(232,198,96,.18); font-size: clamp(15px, 1.3vw, 19px); line-height: 1.5; }
+        .setir b { color: #fff; }
+        .setir span { color: #e9dfcb; white-space: pre-line; }
+        .setir .medallar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .setir .medallar img { height: 54px; width: auto; }
+        @media (max-width: 560px) { .setir { grid-template-columns: 1fr; gap: 2px; } }
+        .qeyd { width: min(1000px, 94%); margin: 14px auto 0; padding: 10px 14px; background: rgba(232,198,96,.12); border-left: 4px solid #e8c660; color: #f1e8d8; font-size: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+    <header class="bash-zolaq">
+        <a class="logo" href="index.html">Zəfər <span>Yolu</span></a>
+        <nav>
+            <a href="index.html">Ana səhifə</a>
+            <a href="sehidler.html" class="aktiv">Şəhidlərimiz</a>
+        </nav>
+    </header>
+
+    <div class="bashliq">
+        <h1>Şəhidlərimiz</h1>
+        <p>UNUDULMAZLAR · VƏTƏN UĞRUNDA CANINDAN KEÇƏNLƏR</p>
+    </div>
+
+    <main class="tor" id="tor"></main>
+
+    <div class="daha">
+        <button class="duyme" id="dahaBtn">Daha çox</button>
+        <div class="say" id="say"></div>
+    </div>
+
+    <!-- Ətraflı pəncərə -->
+    <div class="perde" id="perde">
+        <div class="pencere">
+            <button class="bagla" id="bagla" aria-label="Bağla">&times;</button>
+            <div class="p-ust">
+                <div class="p-esas"><img id="p-sekil" alt=""></div>
+                <div>
+                    <h2 id="p-ad"></h2>
+                    <div class="p-yazi" id="p-yazi"></div>
+                </div>
+            </div>
+            <div id="p-bolmeler"></div>
+        </div>
+    </div>
+
+    <div class="boyuk" id="boyuk"><img id="boyukSekil" alt=""></div>
+
+    <script>
+        /* =====================================================
+           Kodda yalnız ŞƏHİD SAYI var. Bütün məlumat melumat/1.txt, 2.txt ... fayllarından oxunur.
+           Şəkillər: sehid1/1.jpg, sehid1/2.jpg ... (jpg, jpeg, png, webp olur)
+           ===================================================== */
+        const SAY = 16;          // cəmi şəhid sayı (şəkil və txt faylı sayı)
+        const ILK = 6;           // ilk açılışda görünən
+        const ADDIM = 10;        // "Daha çox" hər basanda əlavə olunan
+        const SEKIL_QOVLUQ = "sehid1/";
+        const MELUMAT_QOVLUQ = "melumat/";
+
+        /* txt faylında bu başlıqlardan istifadə olunur (hərflərin böyük-kiçik olması və az hərfləri fərq etmir) */
+        const BOLMELER = [
+            { bashliq: "Şəxsi məlumatlar", sahe: ["Doğum tarixi", "Doğum yeri", "Təhsili", "Məktəb", "Ailə vəziyyəti"] },
+            { bashliq: "Hərbi fəaliyyəti", sahe: ["Qoşun növü", "Mükəlləfiyyət", "Rütbə", "Döyüşdüyü yerlər", "Medal və Ordenlər"] },
+            { bashliq: "Şəhidlik zirvəsi", sahe: ["Şəhid olduğu tarix", "Şəhid olduğu yer", "Dəfn olunduğu yer"] }
+        ];
+        const XUSUSI = ["Ad", "Haqqında", "Ailə tərkibi", "Şəkillər"];
+        const DOGUM = "Doğum tarixi", SEHIDLIK = "Şəhid olduğu tarix";
+
+        function norm(t) {
+            return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/ə/g, "e").replace(/ı/g, "i").replace(/\s+/g, " ").trim();
+        }
+        const ACARLAR = {};
+        BOLMELER.forEach(function (b) { b.sahe.forEach(function (a) { ACARLAR[norm(a)] = a; }); });
+        XUSUSI.forEach(function (a) { ACARLAR[norm(a)] = a; });
+
+        /* txt -> { "Doğum tarixi": "...", ... }  (boş dəyərlər atılır) */
+        function oxu(metn) {
+            const m = {}; let cari = null;
+            metn.replace(/^\uFEFF/, "").split(/\r?\n/).forEach(function (setir) {
+                const x = setir.match(/^\s*([^:]{1,40}):(.*)$/);
+                if (x && ACARLAR[norm(x[1])]) { cari = ACARLAR[norm(x[1])]; m[cari] = x[2].trim(); }
+                else if (cari && setir.trim()) { m[cari] += (m[cari] ? "\n" : "") + setir.trim(); }
+            });
+            Object.keys(m).forEach(function (k) { m[k] = m[k].trim(); if (!m[k]) delete m[k]; });
+            return m;
+        }
+
+        const BOSH = "data:image/svg+xml;utf8," + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="300" height="400" fill="#2a2118"/>' +
+            '<circle cx="150" cy="150" r="58" fill="#4a3a28"/><path d="M40 400c0-90 50-130 110-130s110 40 110 130z" fill="#4a3a28"/></svg>');
+        const UZANTILAR = ["jpg", "jpeg", "png", "webp"];
+        function sekilQoy(img, nomre) {
+            let n = 0;
+            img.onerror = function () { n++; if (n < UZANTILAR.length) img.src = SEKIL_QOVLUQ + nomre + "." + UZANTILAR[n]; else { img.onerror = null; img.src = BOSH; } };
+            img.src = SEKIL_QOVLUQ + nomre + "." + UZANTILAR[0];
+        }
+
+        const MELUMAT = {};            // nomre -> oxunmuş məlumat
+        const tor = document.getElementById("tor");
+        const dahaBtn = document.getElementById("dahaBtn");
+        const say = document.getElementById("say");
+        let gorunen = 0;
+
+        if (location.protocol === "file:") {
+            const q = document.createElement("div");
+           
+            
+            document.querySelector(".bashliq").after(q);
+        }
+
+        for (let n = 1; n <= SAY; n++) (function (nomre) {
+            const k = document.createElement("article");
+            k.className = "kart gizli"; k.tabIndex = 0;
+            k.innerHTML = '<div class="sekil"><img alt=""></div><div class="ad"></div><div class="iller"></div>';
+            sekilQoy(k.querySelector("img"), nomre);
+            k.onclick = function () { ach(nomre); };
+            k.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ach(nomre); } };
+            tor.appendChild(k);
+        })(n);
+
+        function kartDoldur(nomre) {
+            const m = MELUMAT[nomre] || {}, k = tor.children[nomre - 1];
+            k.querySelector(".ad").textContent = m["Ad"] || "";
+            const d = m[DOGUM], o = m[SEHIDLIK];
+            k.querySelector(".iller").textContent = (d || o) ? (d || "?") + " – " + (o || "?") : "";
+            k.querySelector("img").alt = m["Ad"] || "";
+        }
+
+        function goster(n) {
+            const kartlar = tor.children, evvel = gorunen;
+            gorunen = Math.min(gorunen + n, kartlar.length);
+            for (let i = evvel; i < gorunen; i++) {
+                kartlar[i].classList.remove("gizli");
+                if (evvel > 0) kartlar[i].classList.add("yeni");
+            }
+            
+            if (gorunen >= kartlar.length) dahaBtn.style.display = "none";
+            if (evvel > 0 && kartlar[evvel]) kartlar[evvel].scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        dahaBtn.onclick = function () { goster(ADDIM); };
+        goster(ILK);
+
+        /* bütün txt-ləri paralel oxu */
+        for (let n = 1; n <= SAY; n++) (function (nomre) {
+            fetch(MELUMAT_QOVLUQ + nomre + ".txt", { cache: "no-cache" })
+                .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+                .then(function (t) { MELUMAT[nomre] = oxu(t); kartDoldur(nomre); })
+                .catch(function () { MELUMAT[nomre] = {}; });
+        })(n);
+
+        /* ===== Ətraflı pəncərə ===== */
+        const perde = document.getElementById("perde");
+        const SEKIL_RE = /\.(png|jpe?g|webp|gif|svg)$/i;
+        /* vergül, nöqtəli vergül, yeni sətir və ya boşluqla ayrılmış şəkil yollarını ayırır */
+        function parcala(t) {
+            const out = [];
+            t.split(/[\n,;]+/).forEach(function (x) {
+                x = x.trim(); if (!x) return;
+                const m = x.match(/\S+?\.(?:png|jpe?g|webp|gif|svg)(?=\s|$)/gi);
+                if (m && m.length > 1) m.forEach(function (y) { out.push(y); }); else out.push(x);
+            });
+            return out;
+        }
+        /* şəkil .jpg yazılıb amma fayl .png/.jpeg/.webp-dirsə, digər uzantıları da yoxlayır */
+        function yukle(im, src, tapilmadi) {
+            const m = src.match(/^(.*)\.([a-z0-9]+)$/i), kok = m ? m[1] : src;
+            const nam = [src].concat(UZANTILAR.map(function (u) { return kok + "." + u; }).filter(function (y) { return y.toLowerCase() !== src.toLowerCase(); }));
+            let n = 0;
+            im.onerror = function () { n++; if (n < nam.length) im.src = nam[n]; else { im.onerror = null; tapilmadi(); } };
+            im.src = nam[0];
+        }
+        function setir(bolme, ad, dyer) { const d = document.createElement("div"); d.className = "setir"; const b = document.createElement("b"); b.textContent = ad; d.appendChild(b); d.appendChild(dyer); bolme.appendChild(d); }
+        function bolmeYarat(bashliq) {
+            const b = document.createElement("div"); b.className = "bolme";
+            const h = document.createElement("div"); h.className = "bolme-bash"; h.textContent = bashliq; b.appendChild(h);
+            return b;
+        }
+
+        function ach(nomre) {
+            const m = MELUMAT[nomre] || {};
+            const esas = document.getElementById("p-sekil");
+            esas.onerror = null; esas.src = tor.children[nomre - 1].querySelector("img").src;
+            document.getElementById("p-ad").textContent = m["Ad"] || "";
+            document.getElementById("p-yazi").textContent = m["Haqqında"] || "";
+
+            const yer = document.getElementById("p-bolmeler");
+            yer.innerHTML = "";
+
+            BOLMELER.forEach(function (bl) {
+                const b = bolmeYarat(bl.bashliq); let say = 0;
+                bl.sahe.forEach(function (a) {
+                    if (!m[a]) return;
+                    const sp = document.createElement("span");
+                    if (a === "Medal və Ordenlər") {
+                        sp.className = "medallar";
+                        parcala(m[a]).forEach(function (t) {
+                            if (SEKIL_RE.test(t)) { const im = document.createElement("img"); im.alt = "Medal"; yukle(im, t, function () {
+                                im.remove();
+                                if (!sp.children.length) {                       /* heç bir medal şəkli tapılmadısa sətri gizlət */
+                                    const st = sp.closest(".setir"), bl = st && st.parentNode;
+                                    if (st) st.remove();
+                                    if (bl && !bl.querySelector(".setir")) bl.remove();
+                                }
+                            }); sp.appendChild(im); }
+                            else { const x = document.createElement("span"); x.textContent = t; sp.appendChild(x); }
+                        });
+                    } else sp.textContent = m[a];
+                    setir(b, a, sp); say++;
+                });
+                if (say) yer.appendChild(b);
+            });
+
+            if (m["Ailə tərkibi"]) {
+                const b = bolmeYarat("Ailə tərkibi");
+                m["Ailə tərkibi"].split("\n").forEach(function (x) {
+                    const p = x.split(/\s+[-–—]\s+/);
+                    const sp = document.createElement("span");
+                    if (p.length > 1) { sp.textContent = p.slice(1).join(" - "); setir(b, p[0], sp); }
+                    else { sp.textContent = x; setir(b, "", sp); }
+                });
+                yer.appendChild(b);
+            }
+
+            if (m["Şəkillər"]) {
+                const b = bolmeYarat("Şəkillər");
+                const q = document.createElement("div"); q.className = "qaleri"; q.style.marginTop = "14px";
+                parcala(m["Şəkillər"]).forEach(function (src) {
+                    const im = document.createElement("img"); im.alt = m["Ad"] || "";
+                    yukle(im, src, function () { im.remove(); });
+                    im.onclick = function () { document.getElementById("boyukSekil").src = im.src; boyuk.classList.add("ach"); };
+                    q.appendChild(im);
+                });
+                b.appendChild(q); yer.appendChild(b);
+            }
+
+            perde.classList.add("ach");
+            perde.querySelector(".pencere").scrollTop = 0;
+            document.body.style.overflow = "hidden";
+        }
+        function bagla() { perde.classList.remove("ach"); document.body.style.overflow = ""; }
+        document.getElementById("bagla").onclick = bagla;
+        perde.addEventListener("click", function (e) { if (e.target === perde) bagla(); });
+
+        const boyuk = document.getElementById("boyuk");
+        boyuk.onclick = function () { boyuk.classList.remove("ach"); };
+        document.addEventListener("keydown", function (e) {
+            if (e.key !== "Escape") return;
+            if (boyuk.classList.contains("ach")) boyuk.classList.remove("ach"); else bagla();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zəfər Yolu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        :root {
+            /* 2-ci səhifənin fonundakı şəkil: adı və görünmə dərəcəsi */
+            --alt-sekil: url("newfon1/susha2.jpg");
+            --alt-sekil-gorunme: 0.10;      /* 0.10 = 10% */
+            /* Yol hissəsinin eni: 100% = tam ekran */
+            --sayt-eni: 100%;
+        }
+
+        body {
+            background: #1e1812;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        /* ===== 1-ci səhifə: Şuşa şəkli ===== */
+        .sehife1 {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Şəkil: çox yavaş yaxınlaşıb uzaqlaşır */
+        .fon {
+            position: absolute;
+            inset: 0;
+            background-image: url("newfon1/susha.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transform-origin: 60% 60%;
+            animation: yaxinlash 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes yaxinlash {
+            from { transform: scale(1); }
+            to   { transform: scale(1.08); }
+        }
+
+        /* ===== Duman: iki qat, əks istiqamətlərdə axır ===== */
+        .duman {
+            position: absolute;
+            left: 0;
+            bottom: 8%;
+            width: 100%;
+            height: 50%;
+            overflow: hidden;
+            pointer-events: none;
+            -webkit-mask-image: linear-gradient(to top, #000 30%, transparent 100%);
+            mask-image: linear-gradient(to top, #000 30%, transparent 100%);
+        }
+
+        .duman i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;               /* iki dəfə enli, 50% sürüşəndə qüsursuz təkrarlanır */
+            height: 100%;
+            background-repeat: repeat-x;
+            background-size: 50% 100%;
+            filter: blur(14px);
+        }
+
+        .duman i:nth-child(1) {
+            background-image:
+                radial-gradient(ellipse 26% 34% at 22% 62%, rgba(255, 255, 255, 0.42), transparent 70%),
+                radial-gradient(ellipse 22% 28% at 68% 48%, rgba(255, 255, 255, 0.34), transparent 70%);
+            animation: sola 70s linear infinite;
+        }
+
+        .duman i:nth-child(2) {
+            background-image:
+                radial-gradient(ellipse 30% 30% at 40% 74%, rgba(255, 255, 255, 0.30), transparent 70%),
+                radial-gradient(ellipse 20% 26% at 82% 66%, rgba(255, 255, 255, 0.26), transparent 70%);
+            animation: saga 100s linear infinite;
+        }
+
+        @keyframes sola { from { transform: translateX(0); }    to { transform: translateX(-50%); } }
+        @keyframes saga { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+        /* ===== Qaralma: yuxarı yüngül (başlıq üçün), aşağı tam tünd ===== */
+        .qaralma {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.45) 0%,
+                    rgba(0, 0, 0, 0) 40%),
+                /* Yumşaq keçid: çoxlu pilləli əyri, kəskin xətt və zolaqlanma yaranmasın */
+                linear-gradient(to bottom,
+                    rgba(30, 24, 18, 0)    38%,
+                    rgba(30, 24, 18, 0.04) 46%,
+                    rgba(30, 24, 18, 0.13) 54%,
+                    rgba(30, 24, 18, 0.28) 62%,
+                    rgba(30, 24, 18, 0.48) 70%,
+                    rgba(30, 24, 18, 0.70) 78%,
+                    rgba(30, 24, 18, 0.87) 86%,
+                    rgba(30, 24, 18, 0.96) 93%,
+                    #1e1812 100%);
+        }
+
+        /* ===== Başlıq ===== */
+        .yazi {
+            position: absolute;
+            top: 22%;
+            left: 0;
+            width: 100%;
+            padding: 0 16px;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 3px 14px rgba(0, 0, 0, 0.75), 0 0 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .yazi h1 {
+            font-size: clamp(38px, 8vw, 140px);
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+        }
+
+        .yazi p {
+            margin-top: 0.7em;
+            color: #e8c660;
+            font-size: clamp(13px, 2vw, 34px);
+            font-weight: bold;
+            letter-spacing: 0.18em;
+        }
+
+        /* ===== Aşağı sürüşdürmə işarəsi ===== */
+        .asagi {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: #e8c660;
+            text-decoration: none;
+            font-size: clamp(14px, 1.3vw, 22px);
+            letter-spacing: 0.14em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+            animation: zipla 2s ease-in-out infinite;
+        }
+
+        .asagi span {
+            font-size: 1.6em;
+            line-height: 1;
+        }
+
+        @keyframes zipla {
+            0%, 100% { transform: translate(-50%, 0); }
+            50%      { transform: translate(-50%, 10px); }
+        }
+
+        /* ===== 2-ci səhifə: boş, özün düzəldəcəksən ===== */
+        .sehife2 {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: #1e1812;
+            overflow: hidden;
+        }
+
+        /* Tünd fonun içində çox zəif görünən şəkil (qapı və qala divarı) */
+        .sehife2::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: var(--alt-sekil);
+            background-size: cover;
+            background-position: center;
+            opacity: var(--alt-sekil-gorunme);
+            pointer-events: none;
+            /* Yuxarıdan və aşağıdan tünd fona qarışır: 1-ci səhifə ilə xətsiz birləşir */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 70%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 35%, #000 70%, transparent 100%);
+        }
+
+        /* 2-ci səhifəyə əlavə edəcəyin məzmun şəklin üstündə qalsın */
+        .sehife2 > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Xarıbülbül bölməsi: video solda, yazı tam ortada ===== */
+        .xari {
+            display: grid;
+            grid-template-columns: 1fr minmax(0, 1.7fr) 1fr;   /* sol: video, orta: yazı, sağ: boş */
+            align-items: center;
+            min-height: 100vh;
+            padding: clamp(24px, 4vw, 80px);
+            gap: clamp(16px, 3vw, 60px);
+        }
+
+        .xari-video {
+            justify-self: center;
+            width: clamp(200px, 22vw, 400px);
+        }
+
+        /* Videonun qızılı çərçivəsi */
+        .xari-kadr {
+            border: 3px solid #e8c660;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6), 0 0 18px rgba(232, 198, 96, 0.25);
+        }
+
+        .xari-kadr video {
+            display: block;
+            width: 100%;
+            max-height: 75vh;
+            object-fit: cover;
+        }
+
+        /* Səs düymələri */
+        .xari-ses {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .xari-ses button {
+            flex: 0 0 auto;
+            min-width: 40px;
+            height: 36px;
+            padding: 0 8px;
+            font-size: 17px;
+            color: #fff;
+            background: rgba(30, 24, 18, 0.7);
+            border: 2px solid #e8c660;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .xari-ses button:hover {
+            background: rgba(232, 198, 96, 0.25);
+        }
+
+        .xari-ses input[type="range"] {
+            flex: 1;
+            min-width: 0;
+            accent-color: #e8c660;
+            cursor: pointer;
+        }
+
+        /* Yazı: arxa fonsuz, qızılı */
+        .xari-yazi {
+            grid-column: 2;
+            color: #e8c660;
+            font-size: clamp(16px, 1.55vw, 29px);
+            line-height: 1.8;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Abzaslar arası məsafə: yazı sıxışmasın */
+        .xari-yazi p + p {
+            margin-top: 1.2em;
+        }
+
+        /* Kiçik ekran: video yuxarıda, yazı aşağıda */
+        @media (max-width: 900px) {
+            .xari {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+            .xari-video { width: min(70vw, 320px); }
+            .xari-yazi { grid-column: 1; }
+        }
+
+        /* Hərəkəti azaltmaq istəyən istifadəçilər üçün */
+        @media (prefers-reduced-motion: reduce) {
+            .fon, .duman i, .asagi { animation: none; }
+        }
+    
+        /* =====================================================
+           44 GÜNLÜK YOL HİSSƏSİ
+           ===================================================== */
+        /* ===== Saytın əsas qutusu: eni sabit, hündürlüyü açıq ===== */
+        .sayt {
+            width: 100%;
+            max-width: var(--sayt-eni);
+            margin: 0 auto;
+            background: #fff;
+        }
+
+        /* Şuşa qalası: sekil1.jpg tam enli, yolun ən yuxarısında */
+        .qala {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+/* Xarıbülbül bölməsindən qalaya yumşaq keçid */
+.qala-qutu {
+    position: relative;
+    background: #1e1812;
+}
+
+.qala-qutu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    min-height: 140px;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+        #1e1812                 0%,
+        rgba(30, 24, 18, 0.96)  8%,
+        rgba(30, 24, 18, 0.87) 18%,
+        rgba(30, 24, 18, 0.70) 30%,
+        rgba(30, 24, 18, 0.48) 45%,
+        rgba(30, 24, 18, 0.28) 60%,
+        rgba(30, 24, 18, 0.13) 74%,
+        rgba(30, 24, 18, 0.04) 88%,
+        rgba(30, 24, 18, 0)   100%);
+}
+
+.sehife2 { margin-bottom: -1px; }
+        /* ===== Yol: sekil2.jpg aşağı doğru təkrarlanır, xanalar artdıqca uzanır ===== */
+        .yol {
+            background-image: url("sekil2.jpg");
+            background-repeat: repeat-y;
+            background-size: 100% auto;
+            background-position: top center;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;                 /* xanalar arası məsafə */
+            padding: 50px 0 90px;
+            overflow-x: clip;          /* sözlər ekrandan çıxıb üfüqi sürüşmə yaratmasın */
+        }
+
+        /* ===== Gün xanası (düzbucaqlı) ===== */
+        .yol {
+            --xw: clamp(78px, 8.4vw, 176px);                         /* xananın eni */
+            --yol-yarim: 8.8vw;                                       /* yolun yarım eni */
+            --ofs: calc(var(--yol-yarim) + var(--xw) / 2 + 8px);      /* xana yolun kənarında, üstündə yox */
+        }
+        .xana {
+            position: relative;
+            /* Hamısı eyni ölçüdə; yolun eni təxminən 17vw-dir, xana ondan kiçikdir */
+            width: var(--xw);
+            height: clamp(40px, 3.7vw, 80px);
+            padding: 3px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            border: 2px solid #e8c660;
+            border-radius: 6px;
+            background: linear-gradient(135deg,
+                #00b5e2 0%, #00b5e2 33%,
+                #ef3340 33%, #ef3340 66%,
+                #509e2f 66%, #509e2f 100%);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        /* Zigzaq: tək xanalar sola, cüt xanalar sağa (yolun kənarına, otluğa doğru) */
+        .xana:nth-child(odd)  { --dx: -1; left: calc(var(--dx) * var(--ofs)); }   /* yolun solunda */
+        .xana:nth-child(even) { --dx:  1; left: calc(var(--dx) * var(--ofs)); }   /* yolun sağında */
+
+        .xana:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 22px rgba(232, 198, 96, 0.9);
+        }
+
+        .xana .gun {
+            font-size: clamp(10px, 0.95vw, 17px);
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .xana .tarix {
+            font-size: clamp(8px, 0.68vw, 12px);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ===== İlham Əliyevin sözləri ===== */
+        .quote-box {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(170px, 20vw, 380px);
+            padding: 12px 16px 10px;
+            background: rgba(30, 24, 18, 0.92);
+            border-left: 4px solid #e8c660;
+            border-radius: 6px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+            text-align: left;
+            font-weight: normal;
+            pointer-events: none;
+        }
+        .quote-box.sol { right: calc(100% + 1.5vw); }
+        .quote-box.sag { left:  calc(100% + 1.5vw); }
+
+        .quote-box .quote-mark {
+            display: block;
+            color: #e8c660;
+            font-size: clamp(28px, 3vw, 52px);
+            line-height: 0.6;
+            height: 0.5em;
+            text-shadow: none;
+        }
+        .quote-box .quote-text {
+            color: #fff;
+            font-style: italic;
+            font-size: clamp(12px, 1.15vw, 20px);
+            line-height: 1.45;
+            white-space: pre-line;
+            margin: 4px 0 6px;
+            text-shadow: none;
+        }
+        .quote-box .quote-date {
+            display: block;
+            color: #e8c660;
+            font-size: clamp(10px, 0.9vw, 15px);
+            letter-spacing: 0.08em;
+            text-align: right;
+            text-shadow: none;
+        }
+
+        /* ===== Daşlar (şəhid xatirəsi) ===== */
+        .das-qat {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none;              /* yalnız daşların özü basılır */
+        }
+        .das {
+            position: absolute;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: scale 0.2s, filter 0.2s;
+        }
+        .das img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+        .das:hover, .das:focus-visible {
+            scale: 1.15;
+            filter: drop-shadow(0 0 10px rgba(232, 198, 96, 0.95));
+            outline: none;
+        }
+
+        /* "Daha çox" düyməsi (pəncərədə) */
+        .m-link { margin-top: 6px; }
+        .daha-chox {
+            display: inline-block;
+            padding: 12px 28px;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            background: rgba(232, 198, 96, 0.15);
+            border: 3px solid #e8c660;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .daha-chox:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 18px rgba(232, 198, 96, 0.9);
+        }
+
+        /* ===== Yığ / Aç düymələri ===== */
+        .duyme {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 28px;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: #1e1812;
+            border: 3px solid #e8c660;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .duyme:hover {
+            transform: scale(1.06);
+            box-shadow: 0 0 18px rgba(232, 198, 96, 0.9);
+        }
+
+        /* Yığıq halda: yalnız "Yolu aç" düyməsi qalır */
+        .yol-qutu { display: block; position: relative; }
+        .ach-qutu { display: none; padding: 24px 0; background: #1e1812; }
+        .sayt.yigiq .yol-qutu { display: none; }
+        .sayt.yigiq .ach-qutu { display: block; }
+
+        /* ===== Böyüyən pəncərə ===== */
+        .perde {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s, visibility 0.25s;
+        }
+
+        .perde.ach {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .pencere {
+            position: relative;
+            width: min(900px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #1e1812;
+            color: #f1e8d8;
+            border: 3px solid #e8c660;
+            border-radius: 12px;
+            padding: 36px 40px;
+            transform: scale(0.15);          /* xanadan böyüməyə başlayır */
+            transition: transform 0.3s ease-out;
+        }
+
+        .perde.ach .pencere {
+            transform: scale(1);
+        }
+
+        .pencere h2 {
+            color: #e8c660;
+            font-size: 40px;
+            margin-bottom: 6px;
+        }
+
+        /* Daşa basanda açılan şəhid pəncərəsi: yarı şəffaf qəhvəyi fon */
+        .perde.seffaf { background: rgba(0, 0, 0, 0.5); }
+        .pencere.seffaf {
+            background: rgba(30, 24, 18, 0.68);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
+        }
+        .pencere.seffaf h2,
+        .pencere.seffaf .m-yazi,
+        .pencere.seffaf .m-tarix { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85); }
+
+        .pencere .m-tarix {
+            color: #bdb3a2;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .pencere .m-yazi {
+            font-size: 20px;
+            line-height: 1.6;
+            white-space: pre-line;            /* \n ilə yeni sətir yazmağa icazə verir */
+            margin-bottom: 20px;
+        }
+
+        .pencere .m-sehid {
+            display: none;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            border-left: 4px solid #e8c660;
+            background: rgba(232, 198, 96, 0.08);
+            border-radius: 0 8px 8px 0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .pencere .m-sehid .etiket {
+            color: #e8c660;
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .pencere .m-sehid .ad {
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        /* Şəhid bloku: sol tərəfdə yazı, sağ tərəfdə video */
+        .sehid-duzen {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .sehid-duzen.videosuz {
+            grid-template-columns: 1fr;
+        }
+
+        .video-qutu {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-qutu video {
+            display: block;
+            width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            background: #000;
+            cursor: pointer;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .video-qutu .v-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        .video-qutu .v-bar button {
+            background: none;
+            border: 2px solid #e8c660;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 16px;
+            min-width: 38px;
+            height: 34px;
+            padding: 0 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .video-qutu .v-bar button:hover {
+            background: rgba(232, 198, 96, 0.25);
+        }
+
+        .video-qutu .v-bar input[type="range"] {
+            flex: 1;
+            min-width: 0;
+            accent-color: #e8c660;
+            cursor: pointer;
+        }
+
+        /* Tam ekranda video bütün ekranı tutur, düymələr aşağıda qalır */
+        .video-qutu:fullscreen {
+            display: flex;
+            flex-direction: column;
+            border-radius: 0;
+        }
+
+        .video-qutu:fullscreen video {
+            flex: 1;
+            max-height: none;
+            min-height: 0;
+        }
+
+        @media (max-width: 700px) {
+            .sehid-duzen { grid-template-columns: 1fr; }
+        }
+
+        .pencere .m-media img,
+        .pencere .m-media video {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .pencere .m-media iframe {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .bagla {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 36px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        /* ===== Kiçik ekran (telefon) ===== */
+        @media (max-width: 600px) {
+            .yol { gap: 16px; }
+            .pencere { padding: 28px 20px; }
+            .pencere h2 { font-size: 30px; }
+            .pencere .m-yazi { font-size: 17px; }
+        }
+
+        /* Telefonda söz xananın altında görünür */
+        @media (max-width: 700px) {
+            .xana.ile-soz { margin-bottom: 96px; }
+            .quote-box.sol, .quote-box.sag {
+                top: calc(100% + 8px);
+                right: auto;
+                /* xana yolun kənarında olduğu üçün sözü yolun ortasına qaytarırıq */
+                left: calc(50% - var(--dx) * var(--ofs));
+                transform: translateX(-50%);
+                width: min(88vw, 360px);
+                padding: 10px 14px 8px;
+            }
+            .quote-box .quote-text { font-size: 13px; }
+            .quote-box .quote-date { font-size: 11px; }
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <section class="sehife1">
+        <div class="fon"></div>
+        <div class="duman"><i></i><i></i></div>
+        <div class="qaralma"></div>
+
+        <div class="yazi">
+            <h1>Zəfər Yolu</h1>
+            <p>44 GÜN · 44 ADDIM · 44 HEKAYƏ</p>
+        </div>
+
+        <a class="asagi" href="#sehife2">YOLU BAŞLA<span>&darr;</span></a>
+    </section>
+
+    <section class="sehife2" id="sehife2">
+        <div class="xari">
+
+            <div class="xari-video">
+                <div class="xari-kadr">
+                    <video id="xariVideo" src="SEHID%20VIDEO/xari.mp4" autoplay muted loop playsinline preload="auto"></video>
+                </div>
+                <div class="xari-ses">
+                    <button type="button" id="sesDuyme" title="Səsi aç / bağla">🔇</button>
+                    <input type="range" id="sesSlider" min="0" max="1" step="0.05" value="0" aria-label="Səs səviyyəsi">
+                </div>
+            </div>
+
+            <div class="xari-yazi">
+                <p>Xarıbülbül Azərbaycanın qədim və ecazkar torpağı olan Qarabağın, xüsusilə də Şuşanın rəmzi və simvolu kimi tanınan nadir çiçək növüdür.</p>
+                <p>Görünüşü incə bir bülbülü xatırladan bu bitki təbiətin unikal möcüzələrindən biri hesab olunur və yalnız Azərbaycanın bu bölgəsində bitir.</p>
+                <p>Odlar yurdunun azadlığı uğrunda canından keçən igidlərimizin xatirəsini əbədiləşdirmək məqsədi ilə Xarıbülbül Vətən müharibəsində şəhid olanların rəmzinə çevrilmişdir. Bu səbəbdən hər il xüsusi günlərdə döş nişanı olaraq taxılır və xalqımızın qürur mənbəyidir.</p>
+                <p>Azərbaycanın mədəniyyət paytaxtı Şuşada keçirilən ənənəvi "Xarıbülbül" musiqi festivalı da məhz bu çiçəyin adını daşıyır.</p>
+            </div>
+
+        </div>
+    </section>
+
+    
+    <!-- ================= 44 GÜNLÜK YOL ================= -->
+
+
+    <div class="sayt yigiq" id="sayt">  <!-- yigiq: səhifə açılanda yol yığılı olur -->
+
+        <!-- 1. Şuşa qalası: ən yuxarıda sekil1.jpg, ondan sonra sekil2.jpg təkrarlanır -->
+        <div class="qala-qutu">
+    <img src="sekil1.jpg" alt="Şuşa qalası" class="qala">
+</div>
+
+        <!-- Yol: xanalar buraya JavaScript ilə düzülür -->
+        <div class="yol-qutu">
+            <div class="yol" id="yol"></div>
+            <div class="das-qat" id="dasQat"></div>   <!-- daşlar buraya JavaScript ilə düzülür -->
+
+            <!-- Ən aşağıda: 1-ci günün altında yığma düyməsi -->
+            <div style="padding: 24px 0; background: #1e1812;">
+                <button class="duyme" id="yigBtn">&uarr; Yolu yığ</button>
+            </div>
+        </div>
+
+        <!-- Yığıq halda görünən düymə -->
+        <div class="ach-qutu">
+            <button class="duyme" id="achBtn">&darr; Yolu aç (1-ci gündən başla)</button>
+        </div>
+
+    </div>
+
+    <!-- Xanaya basanda açılan böyük pəncərə -->
+    <div class="perde" id="perde">
+        <div class="pencere" id="pencere">
+            <button class="bagla" id="bagla" aria-label="Bağla">&times;</button>
+            <h2 id="m-bashliq"></h2>
+            <div class="m-tarix" id="m-tarix"></div>
+            <div class="m-yazi" id="m-yazi"></div>
+            <div class="m-sehid" id="m-sehid"></div>
+            <div class="m-media" id="m-media"></div>
+            <div class="m-link" id="m-link"></div>
+        </div>
+    </div>
+
+    
+    <script>
+        (function () {
+            const v = document.getElementById("xariVideo");
+            const slider = document.getElementById("sesSlider");
+            const duyme = document.getElementById("sesDuyme");
+            let sonSes = 0.5;                       // səsi açanda qayıdılacaq səviyyə
+
+            // Brauzerlər səsli avtomatik oynatmanı qadağan edir, ona görə səssiz başlayır
+            v.muted = true;
+
+            function ikon() {
+                duyme.textContent = (v.muted || v.volume === 0) ? "🔇" : "🔊";
+            }
+
+            slider.addEventListener("input", function () {
+                const d = parseFloat(slider.value);
+                v.volume = d;
+                v.muted = (d === 0);
+                if (d > 0) sonSes = d;
+                ikon();
+            });
+
+            duyme.addEventListener("click", function () {
+                if (v.muted || v.volume === 0) {
+                    v.muted = false;
+                    v.volume = sonSes;
+                    slider.value = sonSes;
+                } else {
+                    v.muted = true;
+                    slider.value = 0;
+                }
+                ikon();
+            });
+
+            // Video yalnız ekranda görünəndə oynayır, çıxanda dayanır
+            if ("IntersectionObserver" in window) {
+                new IntersectionObserver(function (items) {
+                    items.forEach(function (it) {
+                        if (it.isIntersecting) { v.play().catch(function () {}); }
+                        else { v.pause(); }
+                    });
+                }, { threshold: 0.25 }).observe(v);
+            }
+        })();
+    </script>
+
+    <script>
+        /* =====================================================
+           MƏLUMATLARI BURA DOLDUR
+           Hər günün nömrəsi açardır (1, 2, 3 ... 44).
+           Yazmadığın günlər boş qalır, xana yenə də görünür.
+
+           Hər gün üçün istifadə edə biləcəyin sahələr:
+             tarix    : "27 sentyabr 2020"   (yazmasan, avtomatik hesablanır)
+             yazi     : "Mətn burada..."      (\n ilə yeni sətir)
+             sehid    : { ad: "Adı", metn: "Haqqında" }   (şəhid bölməsi, istəsən)
+             sekiller : ["sekiller/1-a.jpg", "sekiller/1-b.jpg"]
+             videolar : ["videolar/1.mp4"]            (öz kompüterindəki video)
+             youtube  : ["dQw4w9WgXcQ"]               (YouTube linkindəki v= sonrası kod)
+           ===================================================== */
+        const MELUMAT = {
+            1: {
+                "yazi": "Səhər saatlarında Ermənistan silahlı qüvvələri Azərbaycanın yaşayış məntəqələrini və hərbi mövqelərini atəşə tutdu. Buna cavab olaraq Azərbaycan Ordusu bütün cəbhə boyu sürətli əks-hücum əməliyyatlarına başladı. Prezident İlham Əliyev xalqa müraciət edərək \"Bizim işimiz haqq işidir, biz zəfər çalacağıq\" ifadəsi ilə xalqa inam verdi. Həmin gün Füzuli rayonunun Qaraxanbəyli, Qərvənd, Kənd Horadiz, Yuxarı Əbdürrəhmanlı, Aşağı Əbdürrəhmanlı və Cəbrayıl rayonunun Böyük Mərcanlı, Nüzgar kəndləri işğaldan azad edildi. Bütün ölkə ərazisində hərbi vəziyyət elan olundu.",
+                "sehid": {
+                    "ad": "Polkovnik Zaur Nudirəliyev",
+                    "metn": "Su-25 hücum təyyarəsi ilə Cəbrayıl istiqamətində düşmən hədəflərini məhv edərkən vurulmuş və idarəetməni itirən təyyarəsini düşmən səngərinə çırparaq şəhid olmuşdur. Ölümündən sonra \"Vətən Müharibəsi Qəhrəmanı\" fəxri adına layiq görülüb."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            2: {
+                "yazi": "Azərbaycan Prezidenti İlham Əliyev ölkədə qismən səfərbərlik elan edilməsi haqqında sərəncam imzaladı. Bütün cəbhə boyu şiddətli artilleriya döyüşləri və tank həmlələri davam etdi. Ermənistan ordusunun xeyli sayda hərbi texnikası dəqiq zərbələrlə məhv edildi. Ordumuz Talış kəndi ətrafındakı strateji yüksəklikləri tam nəzarətə götürdü. Xarici ölkələrin nümayəndələri sülh çağırışları etsə də, hərbi əməliyyatlar plan üzrə uğurla davam edirdi.",
+                "sehid": {
+                    "ad": "Əsgər Cəbrayıl Dövlətzadə",
+                    "metn": "Murovdağ istiqamətindəki döyüşlərdə xüsusi tapşırığı yerinə yetirərkən əlbəyaxa vuruşmada qəhrəmancasına şəhid olmuşdur. Ölümündən sonra \"Azərbaycan Bayrağı\" ordeni ilə təltif edilib."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            3: {
+                "yazi": "Ermənistan silahlı qüvvələri Daşkəsən rayonunu döyüş bölgəsindən uzaq olmasına baxmayaraq artilleriya atəşinə tutdu. Azərbaycan Ordusunun bölmələri düşmənin bütün əks-hücum cəhdlərinin qarşısını qətiyyətlə aldı. Füzuli şəhəri ətrafında Ermənistan ordusunun tank taboru darmadağın edilərək sıradan çıxarıldı. Düşmən böyük itkilər verərək əvvəlki mövqelərindən xeyli geriyə çəkilməyə məcbur oldu. Müdafiə Nazirliyi düşmənin məhv edilmiş hərbi texnikalarının real videogörüntülərini yayımlamağa başladı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            4: {
+                "yazi": "Düşmən qüvvələri dinc əhalini qorxutmaq üçün Tərtər şəhərini intensiv artilleriya atəşinə tutdu. Azərbaycan Ordusu cəbhənin müxtəlif istiqamətlərində düşmənin komanda-müşahidə məntəqələrini darmadağın etdi. Müzəffər Ali Baş Komandan İlham Əliyev yaralı hərbçilərimizi xəstəxanada ziyarət edərək onlara dəstək oldu. Ermənistanın ehtiyat qüvvələri qorxudan döyüş meydanına gəlməkdən kütləvi şəkildə imtina edirdi. Cəbhənin həm şimal, həm də cənub istiqamətlərində bölmələrimizin irəliləyişi dayanmadan davam edirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            5: {
+                "yazi": "Ermənistan tərəfi Tərtər şəhərini, Şıxarx qəsəbəsini və Bərdə rayonunun yaşayış məntəqələrini qəsdən hədəfə aldı. Azərbaycan Silahlı Qüvvələri düşmənin bir neçə hərbi karvanını pusquya salaraq hava zərbələri ilə məhv etdi. Gecə saatlarında cəbhənin müxtəlif istiqamətlərində düşmənin artilleriya fəallığı yatırıldı. Beynəlxalq media nümayəndələri Azərbaycanın haqlı mövqeyini yavaş-yavaş işıqlandırmağa başladı. Düşmənin canlı qüvvəsində yaranan kəskin çatışmazlıq səbəbindən mülki və yaşlı insanlar səngərə gətirilirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            6: {
+                "yazi": "Ağdam, Tərtər və Bərdə rayonları düşmən tərəfindən yenidən raket atəşinə məruz qaldı. Azərbaycan Ordusu Cəbrayıl-Füzuli istiqamətindəki həlledici hakim yüksəklikləri tam azad etdi. Düşmənin strateji idarəetmə mərkəzi və mühüm rabitə qovşağı məhv edildi. Ermənistan ordusunun xüsusi təyinatlı dəstələri qəfildən pusquya salınaraq darmadağın olundu. Prezident İlham Əliyev beynəlxalq ictimaiyyətə mesaj vermək üçün \"Əl-Cəzirə\" telekanalına geniş müsahibə verdi.",
+                "sehid": {
+                    "ad": "Baş leytenant Muxtar Qasımlı",
+                    "metn": "Füzuli rayonu uğrunda gedən şiddətli atışmalarda ön xətdə vuruşaraq şəhidlik zirvəsinə ucalmışdır. \"Vətən uğrunda\" medalı ilə təltif edilib."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            7: {
+                "yazi": "Prezident İlham Əliyev xalqa müraciət edərək cəbhədən gələn yeni qələbə müjdələrini rəsmən elan etdi. Həmin gün Tərtərin Tərtər şəhərinin su təminatını bərpa edən Suqovuşan və Talış kəndləri işğaldan azad edildi. Həmçinin Cəbrayıl rayonunun Mehdili, Çaxırlı, Aşağı Maralyan, Şəybəy və Quycaq kəndlərinə Azərbaycan bayrağı sancıldı. Suqovuşanın alınması ordumuzun şimal cəbhəsində mənəvi və hərbi üstünlüyünü tam təmin etdi. Düşmən qüvvələri təşviş içində silahlarını və mövqelərini ataraq meşələrə doğru qaçırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            8: {
+                "yazi": "Bu gün Vətən Müharibəsinin ən mühüm dönüş nöqtələrindən və böyük qələbələrindən biri oldu. Azərbaycan Prezidenti İlham Əliyev xalqa növbəti müraciətində Cəbrayıl şəhərinin azad edildiyini böyük qürurla elan etdi. Cəbrayılla yanaşı rayonun Karxulu, Şükürbəyli, Çərəkən, Daşkəsən, Horovlu, Mahmudlu, Cəfərabad, Yuxarı Maralyan və Decal kəndləri xilas edildi. Məğlubiyyəti həzm edə bilməyən Ermənistan qüvvələri qisas məqsədilə Gəncə şəhərini raket atəşinə tutdu. Gəncəyə edilən bu terror hücumu nəticəsində dinc və günahsız mülki şəxslər həlak oldu.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            9: {
+                "yazi": "Ordumuzun sürətli hücumu nəticəsində Cəbrayıl rayonunun Şıxəli Ağalı, Sarıcalı və Məzrə kəndləri işğaldan azad olundu. Həmin gün cənub istiqamətində bölmələrimiz daha geniş ərazilərdə möhkəmlənməyi bacardı. Çarəsiz qalan Ermənistan ordusu Tərtər, Bərdə, Ağcabədi və Goranboy rayonlarını yenidən hədəfə alaraq dinc əhalini vurdu. Azərbaycan Ordusunun dəqiq artilleriya atəşi ilə düşmənin atəş nöqtələri və \"Qrad\" qurğuları məhv edildi. Prezident İlham Əliyev xarici televiziya kanallarına müsahibələr verərək döyüş meydanındakı əsl həqiqətləri dünyaya çatdırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            10: {
+                "yazi": "Bütün cəbhə boyu hər iki tərəfdən kəskin və gərgin döyüşlər davam etdi. Ermənistan hərbçiləri tamamilə ruhdan düşərək bir çox istiqamətlərdə mövqelərini tərk edib fərarilik edirdi. Cəbhənin Füzuli istiqamətində Ermənistan ordusunun əsas silah-sursat anbarı dəqiq zərbə ilə partladıldı. Düşmənin böyük bir zirehli texnika kolonu hərəkət halında olarkən PUA-lar vasitəsilə sıradan çıxarıldı. Prezident İlham Əliyev qardaş Türkiyənin xarici işlər nazirini və digər yüksək çinli rəsmiləri Bakıda qəbul etdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            11: {
+                "yazi": "Azərbaycan Ordusu əks-hücum əməliyyatlarını bütün cəbhə boyu plana uyğun olaraq uğurla davam etdirdi. Ermənistan ordusu daha çox canlı qüvvə və texnika itirərək cəbhə xəttindən geri çəkilməyə məcbur oldu. Mülki əhalini hədəfə alan düşmən Tərtər, Bərdə, Ağdam, Ağcabədi və Füzuli rayonlarının kəndlərini yenidən atəşə tutdu. Bunun cavabında düşmənin əsas komanda-qərargah məntəqəsinə havadan dəqiq atəş zərbələri endirildi. Həmin gün Azərbaycanın müdafiə naziri rusiyalı həmkarı ilə telefon danışığı apararaq vəziyyəti müzakirə etdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            12: {
+                "yazi": "Ermənistan silahlı qüvvələri hərbi cinayətlərini davam etdirərək Gəncə və Bərdə şəhərlərini növbəti dəfə raketlə vurdu. Azərbaycan qüvvələri cənub istiqamətində uğurlu manevrlərlə daha bir neçə vacib hərbi yüksəkliyi ələ keçirdi. Düşmənin hava hücumundan müdafiə sistemləri PUA-larımız tərəfindən qismən məhv edilərək sıradan çıxarıldı. Həmin gün Azərbaycan xüsusi təyinatlıları Hadrut qəsəbəsinə çox yaxınlaşaraq strateji mövqelərdə yerləşdilər. Düşmən mətbuatı artıq kütləvi fərarilik və məğlubiyyət halları ilə üzləşdiyini gizlədə bilmirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            13: {
+                "yazi": "Prezident İlham Əliyev xalqa növbəti dəfə müraciət edərək tarixi xoş xəbərləri çatdırdı. Ali Baş Komandan Xocavənd rayonunun Hadrut qəsəbəsinin işğaldan tam azad edildiyini elan etdi. Həmçinin Çaylı, Yuxarı Güzlək, Gorazıllı, Qışlaq, Qaracallı, Əfəndilər, Süleymanlı və Sur kəndləri düşməndən xilas olundu. Hadrutun azad edilməsi Şuşaya gedən çətin dağ yolunun açılması baxımından mühüm strateji əhəmiyyət daşıyırdı. Eyni gündə Moskvada Azərbaycan, Rusiya və Ermənistan xarici işlər nazirlərinin iştirakı ilə danışıqlar baş tutdu.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            14: {
+                "yazi": "Moskvada əldə edilən razılaşmaya əsasən tərəflər arasında humanitar atəşkəs elan olundu. Lakin Ermənistan rəhbərliyi ənənəvi xainliyinə sadiq qalaraq atəşkəsə riayət etmədi və hücuma keçməyə cəhd etdi. Azərbaycan Ordusu düşmənin bu təxribatının dərhal qarşısını alaraq ona çox ağır zərbələr vurdu. Cəbhənin Ağdərə-Tərtər istiqamətində ermənilərin toparlanmağa çalışan zirehli texnikaları məhv edildi. Xocavənd rayonu ərazisində ordumuz tərəfindən mühüm strateji mövqelər və yüksəkliklər tam nəzarətə götürüldü.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            15: {
+                "yazi": "Gecə saatlarında Ermənistan ordusu Gəncə şəhərindəki yaşayış binalarını \"Elbrus\" (Scud) ballistik raketi ilə vurdu. Bu amansız terror aktı nəticəsində 10 dinc sakin həlak oldu, 34-dən çox mülki şəxs ağır yaralandı. Bütün beynəlxalq ictimaiyyət Ermənistanın dinc əhaliyə qarşı törətdiyi bu hərbi cinayəti şiddətlə qınadı. Azərbaycan Ordusu bu qətliamın qisasını dinc əhalidən deyil, ləyaqətlə yalnız döyüş meydanında aldı. Cəbhədə düşmənin 1 ədəd T-72 tankı və bir neçə böyük artilleriya qurğusu darmadağın edildi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            16: {
+                "yazi": "Cəbhədə rəsmi humanitar atəşkəs rejiminə baxmayaraq, düşmən yenidən fəallaşmağa və mövqelərimizə atəş açmağa cəhd göstərdi. Azərbaycan Silahlı Qüvvələri Ağdərə, Xocavənd və Füzuli istiqamətlərində sarsılmaz əməliyyat üstünlüyünü qoruyub saxlayırdı. Ermənistanın xeyli sayda taktiki PUA-sı və zirehli texnikası hava hücumundan müdafiə bölmələrimiz tərəfindən havada vuruldu. Prezident İlham Əliyev Türkiyənin \"Haber Global\" telekanalına geniş və əhatəli müsahibə verdi. Cəbhə boyu Azərbaycan Ordusunun daha dərindən irəliləməsi üçün yeni taktiki planlar icra olunurdu.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            17: {
+                "yazi": "Cəbhənin bütün istiqamətlərində qarşılıqlı artilleriya atəşləri və gərgin döyüşlər davam edirdi. Azərbaycan Ordusu Xocavənd rayonunun bir neçə yaşayış məntəqəsində tam hərbi nəzarəti təmin etdi. Düşmənin ehtiyat qüvvələri yolda vurularaq cəbhə xəttinə çatmasının tamamilə qarşısı alındı. Tərtər və Ağdam rayonlarının mülki kəndləri düşmən artilleriyasının əsas hədəfinə çevrilməkdə davam etdi. Azərbaycan Müdafiə Nazirliyi azad edilmiş ərazilərdən, xüsusən Hadrutdan yeni videogörüntülər yayımlayaraq düşmənin yalanlarını ifşa etdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            18: {
+                "yazi": "Prezident İlham Əliyev öz rəsmi səhifələrindən Füzuli rayonunun Qaradağlı, Xatınbulaq, Qarakollu kəndlərinin azad edildiyini bildirdi. Eyni zamanda Xocavənd rayonunun Bulutan, Məlikcanlı, Kəmərtük, Təkə və Tağaser kəndləri düşməndən azad olundu. Azərbaycan Ordusu düşmənin Füzuli istiqamətində illərlə qurduğu beton müqavimət xəttini tamamilə qırdı. Ermənistanın ballistik və operativ-taktiki raket kompleskləri işə düşməmişdən öncə sərhəddə önləyici zərbələrlə məhv edildi. Düşmən ordusunda ruh düşkünlüyü, vahimə və komandanlıqdan imtina halları artıq pik həddə çatmışdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            19: {
+                "yazi": "Uğurlu əməliyyatlar nəticəsində Cəbrayıl rayonunun Edişə, Düdükçü, Edilli, Çiraquz kəndləri işğaldan azad edildi. Həmçinin Füzuli rayonunun Arış, Xocavənd rayonunun Düşülü kəndləri ordumuzun tam nəzarətinə keçdi. Azərbaycanın üçrəngli bayrağı azad edilmiş bütün bu strateji kəndlərdə qürurla dalğalanmağa başladı. Düşmən qüvvələri cənub cəbhəsində darmadağın olaraq Zəngilan istiqamətinə doğru panika içində geri çəkilməyə məcbur oldu. Prezident İlham Əliyev nüfuzlu \"RIA Novosti\" və \"France 24\" agentliklərinə müsahibə verərək Azərbaycanın qətiyyətini bir daha vurğuladı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            20: {
+                "yazi": "Hərbi üstünlüyünü artıran ordumuz tərəfindən Xocavənd rayonunun Xırmancıq, Ağbulaq, Axullu kəndləri işğaldan azad edildi. Ordumuz cənub istiqamətində İranla dövlət sərhədinin bərpası istiqamətində iradəliliklə və sürətlə irəliləyirdi. Məğlubiyyət acısı yaşayan Ermənistan silahlı qüvvələri Gəncəyə, Mingəçevirə və digər şəhərlərə namərdcəsinə raket zərbələri endirməyə çalışdı. Düşmənin xain atəş nöqtələri Azərbaycanın dəqiq zərbə PUA-ları vasitəsilə dərhal sıradan çıxarıldı. Prezident İlham Əliyev xalqa müraciət edərək Ordumuzun yeni qələbələrini və sarsılmaz iradəsini çatdırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            21: {
+                "yazi": "Bu tarix Vətən Müharibəsinin ən şanlı və unudulmaz günlərindən biri kimi yaddaşlara həkk olundu. Cəbhə boyu şiddətli və fədakar döyüşlərin ardından böyük Füzuli şəhəri və rayonun 7 kəndi işğaldan azad edildi. Füzulinin Qoçəhmədli, Çimən, Cuvarlı, Pirəhmədli, Musabəyli, İşıqlı, Dədəli kəndləri erməni tapdağından xilas oldu. Lakin gecə saatlarında Ermənistan yenidən Gəncəni ballistik raketlərlə vuraraq 15 dinc sakini, o cümlədən uşaqları qətlə yetirdi. Azərbaycan xalqı bu böyük mülki faciəyə baxmayaraq döyüş meydanında Ordunun ardıcıl qələbələri ilə ayaqda dimdik dururdu.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            22: {
+                "yazi": "Bu gün Araz çayı üzərində yerləşən tarixi Xudafərin körpüsü ətrafı işğaldan azad olundu və Azərbaycan bayrağı orada qaldırıldı. Həmin gün Azərbaycan və Ermənistan arasında növbəti humanitar atəşkəs elan edilsə də, düşmən tərəfindən yenə də pozuldu. Müharibənin bu günü bir çox igid oğullarımız Vətən torpaqları uğrunda qəhrəmancasına şəhidlik zirvəsinə ucaldı. Məsələn, 1994-cü ildə Ağstafa rayonunda anadan olmuş igid qəhrəmanımız Fərrux Abbasov 18 oktyabrda Tərtərdə hərbçi yoldaşlarına su apararkən düşmənin hədəfinə tuş gələrək şəhid olmuşdur. Eyni gündə Zəngilan döyüşlərində qəhrəmanlıq göstərən Eldar Abdullayev və Ağdərə istiqamətində mərdliklə vuruşan İdrət Abdulov kimi oğullarımız da Vətən uğrunda canlarını fəda etdilər.",
+                "sehid": {
+                    "ad": "Əsgər Fərrux Abbasov",
+                    "metn": "Tərtər istiqamətində şiddətli artilleriya atəşi altında ön xətdəki döyüş yoldaşlarına su apararkən şəhid olmuşdur. \"Vətən uğrunda\" medalına layiq görülüb."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            23: {
+                "yazi": "Cəbrayıl rayonunun Soltanlı, Əmirvarlı, Maşanlı, Həsənli, Əlikeyxanlı kəndləri düşməndən tamamilə azad edildi. Həmçinin Qumlaq, Hacılı, Göyərçinveysəlli, Niyazqullar, Keçəl Məmmədli, Şahvəlli, Hacı İsmayıllı, İsaqlı kəndləri terrorçulardan təmizləndi. Azərbaycan Ordusu Xudafərin körpüsü ətrafında mövqelərini tam möhkəmləndirərək zəfər yürüşünü davam etdirdi. Ermənistan ordusunun xüsusi təyinatlı qüvvələri cənubda növbəti dəfə uğursuz əməliyyat keçirərək məhv edildi. Prezident İlham Əliyev ard-arda edilən bu böyük zəfər xəbərlərini rəsmi sosial şəbəkə hesabları vasitəsilə ictimaiyyətə çatdırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            24: {
+                "yazi": "Azərbaycan Ordusu cənub cəbhəsində böyük bir hərbi uğura imza ataraq Zəngilan şəhərini işğaldan azad etdi. Şəhərlə yanaşı rayonun Havalı, Zərnəli, Məmmədbəyli, Həkəri, Şərifan, Muğanlı kəndləri də öz həqiqi sahiblərinə qovuşdu. Füzuli rayonunun Dördçinar, Kürdlər, Yuxarı Əbdürrəhmanlı, Qarğabazar, Aşağı Veysəlli, Yuxarı Aybasanlı kəndləri azad olundu. Cəbrayıl rayonunun Safarşa, Həsənqaydı, Fuğanlı, İmambağı, Daş Veysəlli kəndləri, Xocavəndin Ağcakənd, Mülküdərə kəndləri təmizləndi. Ali Baş Komandan İlham Əliyev xalqa müraciət edərək Zəngilanın azad edilməsini xüsusi bir fəxrlə vurğuladı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            25: {
+                "yazi": "Zəngilan rayonunun Mincivan qəsəbəsi və daha 13 böyük kəndi işğaldan tamamilə azad olundu. Xurama, Xumarlı, Sarıl, Babaylı, Üçüncü Ağalı, Hacallı, Qırax Müşlan, Üdgün, Turabad kəndlərinə yenidən şanlı bayrağımız sancıldı. Həmçinin Füzuli rayonunun Gecəgözlü, Aşağı Seyidəhmədli, Zərgər kəndləri düşmən hərbi birləşmələrindən təmizləndi. Cəbrayıl rayonunun Balyand, Papı, Tulus, Hacılı, Tinli kəndləri də bu gün ordumuz tərəfindən azad olunan ərazilər siyahısına əlavə edildi. Düşmən Qubadlı istiqamətində yeni müdafiə xətti qurmağa çalışsa da, əsgərlərimiz maneələri yararaq irəliləməyə davam etdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            26: {
+                "yazi": "Zəngilan rayonunun Ağbənd qəsəbəsi və Kolluqışlaq, Malatkeşin, Kənd Zəngilan, Genlik kəndləri xalqımıza qaytarıldı. Füzulinin Mollavəli, Yuxarı Rəfədinli, Aşağı Rəfədinli və Cəbrayılın Sirik, Şıxlar, Məstəlibəyli, Dərzili kəndləri də erməni işğalçılarından təmizləndi. Ağbənd qəsəbəsinin azad edilməsi ilə tarixi əhəmiyyət daşıyan İran-Azərbaycan dövlət sərhədi illər sonra tam nəzarətə götürüldü. Məhz bu gün Vətən müharibəsində göstərdiyi şücaəti və məşhur \"Vətən yaxşıdır\" təsnifi ifası ilə milyonların qəlbində taxt quran qəhrəmanımız Xudayar Yusifzadə Zəngilanın Ağbənd qəsəbəsi uğrunda gedən ağır döyüşlərdə şəhidlik zirvəsinə ucaldı (o, Füzuli, Cəbrayıl və Murovdağda da rəşadətlə vuruşmuşdu). Düşmən qüvvələri Ağbəndin itirilməsindən sonra Qubadlı və Laçın istiqamətində güclü təşviş yaşamağa başladı.",
+                "sehid": {
+                    "ad": "Gizir Xudayar Yusifzadə",
+                    "metn": "Zəngilanın Ağbənd qəsəbəsi uğrunda gedən ağır döyüşlərdə qəhrəmancasına şəhid olub. Ölümündən sonra \"Azərbaycan Bayrağı\" ordeni ilə təltif edilib."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            27: {
+                "yazi": "Uğurlu əməliyyatlar nəticəsində Qubadlı rayonunun Zilanlı, Kürd Mahrızlı, Muğanlı və Alaqurşaq kəndləri düşməndən xilas edildi. Həmçinin Xocavənd rayonunun Dolanlar və Bünyadlı kəndləri şanlı ordumuz tərəfindən azad olundu. Zəngilan rayonunun Vənətli və Mirzəhəsənli kəndlərinə qalib əsgərlərimiz tərəfindən Azərbaycan bayrağı sancıldı. Cəbrayıl rayonunun Dağ Tumas, Nüsüs, Xələfli, Minbaşılı kəndləri də quldur düşmən tapdağından təmizləndi. Ordumuz Qubadlı şəhərinin girişinə yaxınlaşaraq orada yerləşən düşmən qüvvələrinə həlledici zərbə vurmağa hazırlaşdı.",
+                "sehid": {
+                    "ad": "Polkovnik Şükür Həmidov",
+                    "metn": "Qubadlı rayonunun azad edilməsi əməliyyatlarında ön cəbhədə vuruşarkən şəhidlik zirvəsinə ucalmışdır. O, artıq sağlığında \"Milli Qəhrəman\" fəxri adını daşıyırdı."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            28: {
+                "yazi": "Cəbhə boyu Azərbaycan Ordusunun uğurlu və ardıcıl hərbi əməliyyatları tam gücü ilə davam edirdi. Ermənistan ordusu Qubadlı şəhərini əldə saxlamaq üçün son ehtiyat qüvvələrini bura cəlb edərək cəhdlər edirdi. Həmin gün cənub və şimal istiqamətlərindən düşmənin xeyli hərbi texnikası qənimət olaraq götürüldü. Düşmənin təpələrdə qurduğu artilleriya batareyaları PUA-lar və dəqiq atəş zərbələri vasitəsilə tamamilə darmadağın edildi. Prezident İlham Əliyev növbəti dəfə xarici jurnalistlərə müsahibə verərək müharibənin gedişatını və Azərbaycanın sarsılmaz mövqeyini dəyərləndirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            29: {
+                "yazi": "Azərbaycan hərb tarixi üçün daha bir şanlı gün yaşandı və Qubadlı şəhəri işğaldan azad edildi. Qubadlı şəhəri ilə yanaşı rayonun Padar, Əfəndilər, Yusifbəyli, Çaytumas, Xanlıq kəndləri silahlı qüvvələrimiz tərəfindən təmizləndi. Zəngilan rayonunun Birinci Alıbəyli, İkinci Alıbəyli, Rəbənd kəndlərinə və Cəbrayılın Qovşudlu kəndinə qalibiyyət bayrağı sancıldı. Həmçinin Cəbrayılın Xələfli kəndi rəsmən azad olunanlar siyahısında dövlət başçısı tərəfindən elan edildi. Qubadlının azad olunması ilə ordumuz strateji Laçın koridoruna doğru irəliləmək üçün yeni mühüm hədəflər müəyyənləşdirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            30: {
+                "yazi": "ABŞ-ın vasitəçiliyi ilə üçüncü humanitar atəşkəs elan olunsa da, Ermənistan dərhal mülki şəxsləri hədəf alaraq bunu pozdu. Tərtər şəhəri və rayonun mülki kəndləri düşmən tərəfindən yenidən kütləvi artilleriya hücumuna məruz qaldı. Prezident İlham Əliyev xalqa tarixi müraciət edərək Ermənistanın xain və ikiüzlü mövqeyini bütün dünyaya ifşa etdi. Elə bu ərəfələrdə etdiyi müraciətlərdə cənab Prezident \"Biz onların başını bu dəmir yumruqla əzirik\" ifadəsini qürurla işlədərək bu hərbi əməliyyatların fəlsəfəsini, gücümüzün simvolunu – yəni o məşhur \"Dəmir Yumruq\" adını ictimaiyyətə daha da aşıladı. Bu vaxt ərzində ordumuz cəbhənin fərqli istiqamətlərində düşmənin atəş nöqtələrini sarsıdıcı zərbələrlə susdurmağa davam edirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            31: {
+                "yazi": "Terror siyasətini davam etdirən Ermənistan silahlı qüvvələri Bərdə rayonunun Qarayusifli kəndini kasetli raketlərlə vurdu. Bu ağır hərbi cinayət nəticəsində 5 dinc sakin həlak oldu, aralarında uşaqlar da olmaqla 13 nəfər yaralandı. Ermənistan eyni zamanda Tərtər şəhərini və ətraf dinc kəndləri fasiləsiz raket atəşi altında saxlayırdı. Cəbhədə isə Azərbaycan Silahlı Qüvvələri Xocavənd və Qubadlı istiqamətlərində düşmənə ağır itkilər verdirən əks-həmlələr edirdi. Düşmənin ön xətdəki böyük səngərləri və yeraltı hərbi sığınacaqları dəqiq aviasiya zərbələri ilə məhv edildi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            32: {
+                "yazi": "Zəngilan rayonunun Birinci Ağalı, İkinci Ağalı kəndləri rəşadətli hərbçilərimiz tərəfindən işğaldan azad olundu. Həmçinin Zəngilanın Üçüncü Ağalı və Zərnəli kəndləri, Füzuli rayonunun Mandılı kəndi düşmən işğalından təmizləndi. Cəbrayıl rayonunun Qazanzəmi, Xanağabulaq, Çüllü, Quşçular, Qaraağac kəndlərinə yenidən Azərbaycan bayrağı sancıldı. Qubadlı rayonunun Qiyaslı, Əbilcə, Qılıcan kəndləri ordumuz tərəfindən tam nəzarətə götürüldü. Ermənistan ordusu isə tam bir faşizm aktı törədərək Bərdə şəhərinə ardıcıl kasetli mərmilərlə zərbə endirdi və 21 dinc sakini qətlə yetirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            33: {
+                "yazi": "Azərbaycan Prezidenti İlham Əliyev bir gündə 30-a yaxın kəndin azad edilməsi xəbərini verərək xalqı sevindirdi. Bərdə teraktına cavab olaraq döyüş meydanında düşmənin onlarla əsas hərbi hissələri darmadağın edildi və qisas alındı. Qubadlı və Laçın istiqamətində yüksəkliklərdə bərkidilmiş mühüm düşmən mövqeləri ələ keçirildi. Xüsusi Təyinatlı Qüvvələrimiz Şuşaya gedən olduqca çətin, meşəlik və dağlıq yollarla hərəkətə başladı. Ermənistan hərbi komandanlığı vəziyyətin artıq nəzarətdən tam çıxdığını rəsmən anlamağa və etiraf etməyə başladı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            34: {
+                "yazi": "Cəbrayıl rayonunun Xudaverdili, Qurbantəpə, Şahvələdli kəndləri ordumuzun gücü ilə azad olundu. Cəbrayılın Xubyarlı kəndi, Zəngilanın Aladin, Vejnəli kəndləri düşmənin hərbi birləşmələrindən tam təmizləndi. Qubadlı rayonunun Kavdadıq, Məmər, Mollalı kəndlərinə müzəffər əsgərlərimiz tərəfindən Azərbaycan bayrağı sancıldı. Bütün cəbhə boyu hərbi və əməliyyat şəraiti tamamilə ordumuzun diktəsi və nəzarətində idi. Prezident İlham Əliyev müsahibələrində Ermənistan rəhbərliyini daha çox itki vermədən tezliklə kapitulyasiyaya çağırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            35: {
+                "yazi": "Düşmənin qurduğu atəş nöqtələri məhv edilərək cəbhənin şimalında onların bütün irəliləmə cəhdlərinin qarşısı qətiyyətlə alındı. Şuşa şəhəri istiqamətində irəliləyən bölmələrimiz çətin relyefdə qəhrəmanlıq dastanı yazaraq mürəkkəb əməliyyatlar həyata keçirirdi. Ermənistan ordusunun Smerç raket sistemləri dəqiq atəşlə yerlə-yeksan edilərək sıradan çıxarıldı. Ordumuz Xocavənd ərazisindəki hakim hərbi yüksəklikləri tutaraq ərazidə strateji üstünlüyünü tam möhkəmləndirdi. Geri çəkilən düşmən texnikasını və böyük silah-sursat ehtiyatlarını döyüş meydanında qoyub qaçırdı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            36: {
+                "yazi": "Bütün cəbhə xəttində lokallaşmış şəkildə ağır şiddətli döyüşlər davam etdi. Ermənistan qüvvələri müxtəlif istiqamətlərdən əks-hücuma cəhd etsə də, böyük itki verərək yenidən geri atıldı. Prezident İlham Əliyev Azərbaycan xalqını orduya sıx dəstək olmağa səsləyən tarixi çıxışlarını davam etdirdi. Şuşaya gedən qruplarımız düşmənin gözləmədiyi və texnikanın çıxa bilmədiyi sıldırım qayalara doğru hərəkət edirdi. Düşmən aviasiyası döyüş əməliyyatlarına müdaxilə etmək istəsə də hava hücumundan müdafiə qüvvələrimiz onlara havaya qalxmağa imkan vermədi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            37: {
+                "yazi": "Cəbrayıl rayonunun Çapand, Hacı İsaqlı, Qoşabulaq kəndləri hərbçilərimiz tərəfindən işğaldan azad edildi. Zəngilan rayonunun Dərə Gilətağ, Böyük Gilətağ kəndləri, Qubadlı rayonunun İşıqlı, Muradxanlı, Milanlı kəndləri düşməndən təmizləndi. Ordumuzun Xüsusi Təyinatlı bölmələri Şuşa şəhərinə ən yaxın məsafələrə yerləşərək həlledici zərbəyə tam hazırlandı. Ermənistan rəhbərliyi müharibədə artıq məğlub olduqlarını xarici mediada və ictimaiyyət qarşısında etiraf etməyə başladı. Düşmənin Şuşaya aparan təminat yolları ordumuz tərəfindən tam kəsilərək şəhər rəsmən blokadaya alındı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            38: {
+                "yazi": "Azərbaycan Silahlı Qüvvələri Tərtər və Ağdam istiqamətində düşmənin çoxillik səngərlərini darmadağın etdi. Mühüm əhəmiyyətə malik Laçın dəhlizinə vizual və atəş nəzarəti tam şəkildə təmin edildi. Şuşa ətrafında sıx meşəliklərdə igidlərimizlə düşmən arasında qanlı əlbəyaxa döyüşlər başladı. Füzuli rayonunda yerləşən minalanmış ərazilər sürətlə təmizlənərək arxadan gələn qüvvələrimiz üçün təchizat yolları açıldı. Prezident İlham Əliyev müharibədəki son vəziyyəti izah etmək üçün İtaliyanın \"La Repubblica\" qəzetinə müsahibə verdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            39: {
+                "yazi": "Uğurlu yürüşünü davam etdirən ordumuz Cəbrayıl rayonunun Mirək, Kavdar kəndlərini işğaldan azad etdi. Zəngilan rayonunun Məşədiismayıllı, Şəfibəyli kəndləri rəşadətli hərbçilərimizin tam nəzarətinə keçdi. Qubadlı rayonunun Başarat, Qaracallı, Qaraçanlı kəndləri erməni tapdağından xilas edilərək bayrağımıza qovuşdu. Şuşa uğrunda gedən misilsiz və bənzərsiz döyüşlərdə igidlərimiz ağır silahlarsız, yalnız yüngül silahlarla sıldırım qayalarla şəhərə daxil olmağa başladı. Düşmən qüvvələri Şuşada böyük panika və qorxu içərisində hər şeyi ataraq şəhəri tərk etməyə başladı.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            40: {
+                "yazi": "Şuşa şəhərinin ətrafında, Xocalı və Xocavənd istiqamətlərində ağır və qanlı atışmalar gedirdi. Azərbaycanın qəhrəman oğulları yüngül silahlar və süngü-bıçaqla düşmənin ağır zirehli texnikasına qarşı mübarizə aparırdı. Xüsusi təyinatlı qüvvələrimiz Şuşanın Daşaltı kəndini və ətraf hakim hündürlükləri tam nəzarətə götürdü. Cəbhənin digər şimal və cənub istiqamətlərində düşmənin 2 iri sursat anbarı tamamilə partladıldı. Bütün Azərbaycan xalqı Şuşadan gələcək o böyük, həlledici zəfər xəbərini səbirsizliklə və dua ilə gözləyirdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            41: {
+                "yazi": "Şuşa daxilində və ətrafında həlledici, üzbəüz, süngü-bıçaq və küçə döyüşləri bütün gün davam etdi. Ermənistan ordusunun \"İsgəndər\" raketi Şuşa istiqamətinə atılsa da, ordumuzun iradəsini və hücum sürətini qıra bilmədi. Qəhrəman Azərbaycan hərbçiləri əlbəyaxa döyüşlərdə şəhərin küçələrini düşməndən təmizləyərək onları darmadağın etdi. Həmin gün ərzində Şuşaya köməyə gəlməyə çalışan düşmənin xeyli sayda hərbi kolonu zərərsizləşdirildi. Bu tarix əslində Şuşanın azadlığının faktiki olaraq hərbi cəhətdən rəsmiləşdiyi an idi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            42: {
+                "yazi": "Füzuli rayonunun Yuxarı Veysəlli, Yuxarı Seyidəhmədli, Qorqan kəndləri ordumuz tərəfindən azad olundu. Həmçinin Füzulinin Üçüncü Mahmudlu, Qacar, Divanalılar kəndləri erməni terrorçularından təmizləndi. Cəbrayılın Yuxarı Məzrə, Yanarhac, Qubadlının Qəzyan, Balasoltanlı, Mərdanlı kəndlərinə müzəffər bayrağımız sancıldı. Zəngilanın Beşdəli kəndi və Xocavəndin Ataqut, Tsakuri kəndləri də qürurla azad edildi. Şuşa şəhəri isə artıq faktiki olaraq tamamilə Azərbaycan Silahlı Qüvvələrinin sarsılmaz nəzarətinə keçmişdi.",
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            43: {
+                "yazi": "Bütün dünyaya səs salan o böyük tarixi qələbə günü gəlib çatdı. Azərbaycan Respublikasının Prezidenti, Müzəffər Ali Baş Komandan İlham Əliyev Şəhidlər Xiyabanından xalqa müraciət edərək mədəniyyət beşiyimiz olan Şuşa şəhərinin işğaldan azad olunduğunu müjdələdi. Məhz bu böyük nailiyyət erməni ordusunun belini tamamilə qırdı və bütün müharibənin taleyini birdəfəlik həll etdi. Dövlət başçımızın müharibə boyunca düşməni məhv edən gücümüzü xarakterizə etdiyi o məşhur \"Dəmir Yumruq\" artıq əməliyyatın rəsmi simvoluna çevrilmişdi. Bütün Azərbaycan xalqı bu unudulmaz qələbəni böyük coşqu, fəxarət göz yaşları və dalğalanan bayraqlarla qeyd edirdi.",
+                "sehid": {
+                    "ad": "Baş gizir Mehrab Niftəliyev",
+                    "metn": "Şuşa uğrunda gedən həlledici və üzbəüz döyüşlərdə xüsusi təyinatlı kimi rəşadətlə vuruşaraq şəhid olmuşdur. \"Vətən Müharibəsi Qəhrəmanı\" fəxri adı ilə təltif edilib."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            },
+
+            44: {
+                "yazi": "Müharibənin son günündə irimiqyaslı əməliyyatla daha 71 kənd, 1 qəsəbə və 8 strateji yüksəklik işğaldan azad edildi. Füzuli, Xocalı, Xocavənd, Cəbrayıl, Qubadlı, Zəngilan və Laçın rayonlarının onlarla yaşayış məntəqəsi erməni silahlılarından təmizləndi. Ordumuzun qarşısında heç cür duruş gətirə bilməyən Ermənistan tam şəkildə məğlubiyyəti qəbul etməyə məcbur oldu. 10 noyabr gecə saatlarında Azərbaycan, Rusiya və Ermənistan liderləri tərəfindən müharibəni yekunlaşdıran üçtərəfli kapitulyasiya bəyanatı imzalandı. Bu möhtəşəm \"Dəmir Yumruq\" əməliyyatı sayəsində Ağdam, Kəlbəcər və Laçın bir güllə atılmadan döyüşsüz geri qaytarıldı və Azərbaycan 44 günlük Vətən Müharibəsində tarixi Zəfər qazandı.",
+                "tarix": "9–10 noyabr 2020",
+                "sehid": {
+                    "ad": "Gizir İntiqam Əsgərli",
+                    "metn": "Şuşa istiqamətində müharibənin son anlarında qəhrəmancasına şəhidlik zirvəsinə ucalmışdır. Ölümündən sonra \"Vətən Müharibəsi Qəhrəmanı\" fəxri adına layiq görülmüşdür."
+                },
+                "sekiller": [],
+                "videolar": [],
+                "youtube": []
+            }
+        };
+
+        /* =====================================================
+           İLHAM ƏLİYEVİN SÖZLƏRİ
+           Açar: gün nömrəsi. Söz həmin günün xanasının yanında görünür.
+           (\n ilə yeni sətir)
+           ===================================================== */
+        const SOZLER = {
+            1:  { metn: "Bizim işimiz haqq işidir, biz zəfər çalacağıq!", tarix: "27 sentyabr 2020" },
+            8:  { metn: "Biz onları iti qovan kimi qovuruq və qovacağıq!", tarix: "4 oktyabr 2020" },
+            13: { metn: "Mən nəyi, necə, nə vaxt etmək lazımdır, onu bilirəm.", tarix: "9 oktyabr 2020" },
+            43: { metn: "Əziz Şuşa, sən azadsan!\nƏziz Şuşa, biz qayıtmışıq!", tarix: "8 noyabr 2020" }
+        };
+
+        /* =====================================================
+           DAŞLAR VƏ ŞƏHİDLƏR
+           das/ qovluğundakı şəkillər. blend: şəklin fonunu gizlətmək üçün
+             "multiply" = ağ fonu gizlədir,  "screen" = qara fonu gizlədir,
+             boş = şəffaf PNG üçün (heç nə yazma)
+           ===================================================== */
+        const DASLAR = [
+            { src: "das/das1.jpg",  blend: "multiply" },
+            { src: "das/das3.png",  blend: "multiply" },
+            { src: "das/das4.webp", blend: "screen" }
+        ];
+
+        /* Hər şəhid bir daşı təmsil edir: ad, mətn, link */
+        const SEHIDLER = [
+            {
+                ad: "Fəzail Əliyev Cahan",
+                metn: `Fəzail Əliyev Cahan oğlu Azərbaycanın qəhrəman şəhidlərindən biridir. O, gənc yaşlarından vətənpərvərlik ruhunda böyümüş və hərb işinə maraq göstərmişdir. Fəzail Azərbaycan Ordusunun sıralarına qatılaraq hərbi xidmətini şərəflə yerinə yetirirdi. O, xidmət etdiyi müddət ərzində nizam-intizamı və cəsurluğu ilə yoldaşları arasında seçilmişdir. 2020-ci il sentyabrın 27-də başlayan Vətən müharibəsində iştirak edərək birbaşa cəbhəyə yollanmışdır. Fəzail müxtəlif istiqamətlərdə gedən ağır döyüşlərdə əsl qəhrəmanlıq nümayiş etdirmişdir. Düşmən hücumlarının dəf edilməsində və torpaqlarımızın azad olunmasında onun böyük rolu olmuşdur. Vətənin ərazi bütövlüyü uğrunda gedən döyüşlərdə son nəfəsinədək vuruşaraq şəhidlik zirvəsinə ucalmışdır. Ölümündən sonra göstərdiyi şücaətə görə dövlətimiz tərəfindən müvafiq fəxri medallarla təltif edilib. Onun əziz xatirəsi hər zaman Azərbaycan xalqının qəlbində və tarixində yaşayacaqdır.`,
+                link: "https://unudulmazlar.az/az/infom/98"
+            },
+            {
+                ad: "Rasim Rufullayev Yadigar",
+                metn: `Rasim Rufullayev Yadigar oğlu Vətən müharibəsində adını tarixə yazdıran cəsur hərbçilərimizdəndir. O, hərbi xidmət dövründə verilən bütün tapşırıqları yüksək peşəkarlıqla və dəqiqliklə yerinə yetirirdi. Vətənimizin torpaqları düşmən işğalından azad edilərkən cəbhənin ən qaynar nöqtələrində vuruşmuşdur. Xüsusilə Füzuli rayonu istiqamətində gedən hərbi əməliyyatlarda aktiv şəkildə iştirak etmişdir. O, döyüş meydanında öz cəsarəti ilə silahdaşlarına hər zaman böyük ruh yüksəkliyi aşılamışdır. Düşmənin xeyli sayda canlı qüvvəsinin və mövqelərinin məhv edilməsində bilavasitə iştirak etmişdir. 7 noyabr 2020-ci ildə Füzulinin azadlığı uğrunda gedən həlledici döyüşlərdə qəhrəmancasına vuruşmuşdur. Məhz bu ağır döyüşlərdə o, ən ali məqama — əbədi yaşar şəhidlik zirvəsinə ucalmışdır. Dövlət başçısının sərəncamlarına əsasən, ölümündən sonra qəhrəmanlığına görə medallarla təltif olunmuşdur. Rasim Rufullayevin şanlı xatirəsi xalqımız tərəfindən həmişə böyük ehtiramla anılır və anılacaqdır.`,
+                link: "https://unudulmazlar.az/az/infom/3205"
+            },
+            {
+                ad: "Murad Məmmədov Yusif",
+                metn: `Murad Məmmədov Yusif oğlu 44 günlük haqq savaşımızda qəhrəmanlıq göstərən igid oğullarımızdandır. O, vətənpərvər bir gənc kimi ölkəsinin ərazi bütövlüyü uğrunda hər an mübarizəyə hazır idi. Vətən müharibəsi başlayanda silaha sarılaraq doğma torpaqlarımızın müdafiəsinə qalxmışdır. Murad bir neçə rayonumuzun işğaldan azad edilməsində əsl fədakarlıq nümayiş etdirmişdir. Xüsusilə Qubadlı şəhəri istiqamətində keçirilən əməliyyatlarda onun əvəzsiz xidmətləri olmuşdur. Düşmənə qarşı amansızcasına vuruşaraq mühüm strateji yüksəkliklərin alınmasında iştirak edib. Qubadlı uğrunda gedən ağır döyüşlər zamanı son anına qədər silahını əlindən yerə qoymamışdır. O, verilən döyüş tapşırığını yerinə yetirərkən mərdliklə şəhid olmuş və adını dastanlara yazdırmışdır. Qəhrəman şəhidimiz vətən qarşısındakı borcunu ləyaqətlə yerinə yetirdiyinə görə medallara layiq görülüb. Onun keçdiyi şərəfli döyüş yolu gələcək nəsillər üçün qürur və mərdlik örnəyi olaraq qalacaqdır.`,
+                link: "https://unudulmazlar.az/az/infom/3029"
+            },
+            {
+                ad: "Ülvi Qulamlı Şahin",
+                metn: `Ülvi Qulamlı Şahin oğlu 24 may 1994-cü ildə Mingəçevir şəhərində dünyaya göz açmışdır. O, 2011-2012-ci illərdə Mingəçevir şəhərindəki 13 nömrəli tam orta məktəbdə təhsil almışdır. Ülvi məktəb illərindən etibarən dostları arasında öz səmimiyyəti və yüksək vətənpərvərliyi ilə seçilirdi. İkinci Qarabağ müharibəsi başladıqda o, tərəddüd etmədən ön xəttə getmək üçün çağırışa səs vermişdir. Cəbhənin müxtəlif istiqamətlərində düşmənə qarşı aparılan hərbi əməliyyatlarda cəsarətlə vuruşmuşdur. Xüsusən Tərtər rayonu ərazisində gedən şiddətli döyüşlərdə əsl igidlik nümayiş etdirmişdir. Suqovuşan qəsəbəsinin azad edilməsi istiqamətində irəliləyən bölmələrimizin tərkibində ön sıralarda olmuşdur. 20 oktyabr 2020-ci ildə Suqovuşan uğrunda gedən qanlı döyüşlərdə qəhrəmancasına şəhid olmuşdur. Ülvinin göstərdiyi rəşadət dövlətimiz tərəfindən yüksək qiymətləndirilərək fəxri medallarla mükafatlandırılmışdır. Mingəçevir sakinləri və bütün Azərbaycan xalqı onun əziz xatirəsini daim uca tutur.`,
+                link: "https://unudulmazlar.az/az/infom/501"
+            },
+            {
+                ad: "Ariz Məhərrəmov Fərzulla",
+                metn: `Ariz Məhərrəmov Fərzulla oğlu Azərbaycanın bütövlüyü uğrunda canını fəda edən unudulmaz qəhrəmanlardandır. O, hər zaman vətəninə, xalqına bağlı, ləyaqətli və cəsur bir gənc kimi formalaşmışdır. Hərbi xidmət dövründə silah və texnikaların sirlərinə dərindən yiyələnərək mükəmməl əsgər olmuşdur. Sentyabrın 27-də başlanan əks-hücum əməliyyatlarına dərhal qoşularaq böyük inamla cəbhəyə yollanmışdır. Ariz ön xətdə gedən ən ağır döyüşlərdə düşmənə qarşı mətanətlə vuruşaraq onlara göz dağı vermişdir. O, yoldaşlarını qorumaq üçün dəfələrlə öz həyatını təhlükəyə atmaqdan belə qətiyyən çəkinməmişdir. Vətən torpaqlarının qarış-qarış azad edilməsində onun da müqəddəs alın təri və şanlı qanı vardır. Azərbaycanın ərazi bütövlüyünün təmin olunması zamanı döyüş tapşırığını icra edərkən şəhid olmuşdur. Onun şücaəti və igidliyi nəzərə alınaraq ölümündən sonra dövlət medalları ilə təltif edilmişdir. Arizin unudulmaz xatirəsi bugünkü və gələcək nəsillər tərəfindən daimi ehtiramla yad ediləcək.`,
+                link: "https://unudulmazlar.az/az/infom/1594"
+            },
+            {
+                ad: "Elmir Məmiyev Zamin",
+                metn: `Elmir Məmiyev Zamin oğlu Vətən müharibəsinin şanlı səhifələrini yazan qəhrəman əsgərlərimizdəndir. O, hələ uşaq yaşlarından hərbçi olmaq və işğal altındakı torpaqlarımızı azad görmək arzusu ilə yaşayırdı. Elmir 2020-ci ilin yanvar ayında həqiqi hərbi xidmətə çağırılmış və ordu sıralarına qatılmışdır. O, xidmətinin ilk aylarından etibarən nümunəvi əsgər kimi komandirlərinin və yoldaşlarının rəğbətini qazanmışdır. Hərbi xidmətdə olarkən İkinci Qarabağ müharibəsi başlamış və o, aktiv şəkildə döyüşlərə cəlb olunmuşdur. Gənc olmasına baxmayaraq, döyüş meydanında çox böyük cəsarət, qorxmazlıq və əzmkarlıq nümayiş etdirmişdir. Düşmənin müdafiə xəttinin yarılmasında və onlara ağır zərbələrin vurulmasında birbaşa iştirak edib. 2 oktyabr 2020-ci il tarixində şiddətli atışmalar zamanı mərdliklə vuruşaraq şəhidlik məqamına yüksəlmişdir. Şəhadətindən sonra göstərdiyi misilsiz qəhrəmanlıqlara görə Azərbaycan dövləti tərəfindən medallara layiq görülmüşdür. Elmirin adı və qəhrəmanlıq irsi xalqımızın qürur mənbəyi olaraq hər zaman uca tutulacaqdır.`,
+                link: "https://unudulmazlar.az/az/infom/2498"
+            },
+            {
+                ad: "Şöhrət Əliyev Cambulat",
+                metn: `Şöhrət Əliyev Cambulat oğlu 30 oktyabr 1999-cu ildə Gəncə şəhərində anadan olmuşdur. O, 2005-ci ildə Gəncə şəhərindəki M.Əzizbəyov adına 15 nömrəli tam orta məktəbə daxil olmuşdur. Məktəb illərindən tərbiyəsi, sakit təbiəti və böyük vətən sevgisi ilə ətrafındakıların dərin sevgisini qazanmışdı. Şöhrət boya-başa çatdıqdan sonra hərbi xidmətə yollanaraq əsgəri borcunu ləyaqətlə yerinə yetirən gənclərimizdəndir. 2020-ci il sentyabr ayında Vətən müharibəsi başladıqda dərhal cəbhənin ön xəttinə köçürülmüşdür. O, qorxmaz və cəsur bir əsgər kimi düşmənə qarşı aparılan əməliyyatlarda ən öndə gedənlərdən idi. Müharibə dövründə ordumuzun zəfər qazanması üçün əlindən gələn bütün fədakarlıqları etmişdir. Ölkəmizin ərazi bütövlüyü uğrunda gedən ölüm-dirim savaşında qəhrəmancasına şəhid olmuşdur. Şöhrətin vətən uğrundakı fədakarlığı ölümündən sonra dövlətimiz tərəfindən fəxri medallarla qiymətləndirilib. Onun keçdiyi şanlı döyüş yolu daim öyrəniləcək, gənclərə aşılanacaq və böyük hörmətlə xatırlanacaq.`,
+                link: "https://unudulmazlar.az/az/infom/79"
+            },
+            {
+                ad: "Kənan Müzəffərli Azər",
+                metn: `Kənan Müzəffərli Azər oğlu 22 dekabr 1995-ci ildə Gədəbəy rayonunun Çalburun kəndində doğulmuşdur. O, 2002-2013-cü illərdə orta məktəb təhsili almış və təhsilini müvəffəqiyyətlə başa vurmuşdur. Kənan uşaqlıqdan zəhmətkeşliyi, vətənpərvərliyi və doğma yurduna olan hədsiz sevgisi ilə fərqlənirdi. Vətən müharibəsi başlayan kimi o, torpaqlarımızı azad etmək üçün inamla ordu sıralarına yollanmışdır. Döyüşlər zamanı göstərdiyi hünər və taktik bacarıqları komandanlıq tərəfindən daim təqdir olunurdu. Xüsusilə cənub cəbhəsində, Zəngilan rayonunun işğaldan azad edilməsi əməliyyatlarında fəal vuruşub. O, Zəngilan istiqamətində düşmənin bir çox strateji mövqelərinin ələ keçirilməsində yaxından iştirak etmişdir. 27 oktyabr 2020-ci ildə Zəngilan döyüşlərində son qanına qədər mübarizə apararaq şəhidlik zirvəsinə ucalıb. Göstərdiyi böyük rəşadətə görə Kənan Müzəffərli şəhadətindən sonra dövlət tərəfindən medallarla təltif edilib. Gədəbəylilər və bütün ölkə vətəndaşları bu cəsur şəhidimizin xatirəsini həmişə uca tuturlar.`,
+                link: "https://unudulmazlar.az/az/infom/983"
+            },
+            {
+                ad: "Anar Əliyev Talıb",
+                metn: `Anar Əliyev Talıb oğlu qanı ilə tarix yazan şanlı və unudulmaz Azərbaycan əsgərlərindən biridir. O, Vətənin və xalqın müdafiəsini hər şeydən üstün tutaraq ordu sıralarında yüksək ruhla xidmət etmişdir. 27 sentyabrda əks-hücum əmri veriləndə qələbə əzmi ilə silahlanıb qorxusuzca cəbhəyə atılmışdır. Anar Vətən müharibəsinin bir çox həlledici, çətin və ağır əməliyyatlarında mərdliklə iştirak etmişdır. O, döyüş yoldaşları ilə birlikdə düşmən sədlərini yararaq irəliləməyi və onları məhv etməyi bacarmışdır. Xüsusilə Füzuli rayonu istiqamətində keçirilən hərbi əməliyyatlarda böyük qəhrəmanlıq nümayiş etdirmişdir. 26 oktyabr 2020-ci ildə Füzuli uğrunda gedən atışmalarda fədakarcasına son nəfəsinə qədər vuruşub şəhid olmuşdur. Şəhidimizin nəşi doğulduğu bölgəyə gətirilərək Oğuz şəhəri Şəhidlər Xiyabanında dəfn edilmişdir. Onun müharibədə göstərdiyi qəhrəmanlıq dövlətimiz tərəfindən yüksək qiymətləndirilərək medallarla mükafatlandırılmışdır. Anarın şanlı mübarizə yolu və vətənpərvərliyi hər bir azərbaycanlı gənc üçün əsl nümunədir.`,
+                link: "https://unudulmazlar.az/az/infom/1471"
+            },
+            {
+                ad: "Orxan Dənziyev Mübariz",
+                metn: `Orxan Dənziyev Mübariz oğlu 18 iyul 2002-ci ildə Lerik rayonunun Laman kəndində anadan olmuşdur. Gənc yaşlarında olmasına baxmayaraq, o, vətənə və torpağa böyük bir eşqlə bağlanmışdı, subay idi. Azərbaycan Ordusunun əsgəri kimi o, xidmət etdiyi müddətdə daim komandirləri tərəfindən seçilən hərbçilərdən olmuşdur. 2020-ci ildə Vətən müharibəsi başlayanda gənc qəhrəmanımız dərhal ön xəttə yollanmışdır. Döyüşlər zamanı öz yaşıdları arasında göstərdiyi dözüm, iradə və igidliklə böyük rəğbət qazanmışdır. O, əsasən Tərtər rayonu istiqamətində düşmənə qarşı aparılan əməliyyatlarda aktiv şəkildə vuruşmuşdur. Suqovuşan qəsəbəsinin düşməndən təmizlənməsi uğrunda gedən döyüşlərdə əsl rəşadət nümayiş etdirib. 12 oktyabr 2020-ci ildə məhz Suqovuşan döyüşlərində qəhrəmancasına vuruşaraq şəhidlik zirvəsinə yüksəlib. Orxanın nəşi doğma Lerik rayonuna aparılaraq Laman kənd qəbiristanlığında böyük izdihamla torpağa tapşırılmışdır. O, ölümündən sonra göstərdiyi igidliyə görə Azərbaycan dövləti tərəfindən fəxri medallarla təltif edilib.`,
+                link: "https://unudulmazlar.az/az/infom/1009"
+            },
+            {
+                ad: "Şahlar Məmmədov Şahin",
+                metn: `Şahlar Məmmədov Şahin oğlu 1 noyabr 1995-ci ildə Neftçala rayonunun Ərəbqardaşbəyli kəndində doğulmuşdur. O, uşaqlıq illərini doğma kəndində keçirmiş və hər zaman cəsurluğu, mərdliyi ilə tanınmışdır. Hərbi xidmətə çağırıldıqda böyük qürur hissi ilə vətənin keşiyində durmağa yollanmışdır. Şahlar Vətən müharibəsi günlərində cəbhənin bir çox isti nöqtələrində uğurlu hərbi əməliyyatlara qatılıb. Düşmənin möhkəmləndirilmiş postlarının ələ keçirilməsində silaha sarılaraq yoldaşları ilə birgə vuruşub. Savaşın ən kritik və mürəkkəb mərhələlərindən biri olan Şuşa əməliyyatında onun xüsusi xidmətləri olmuşdur. O, sıldırım qayaları aşaraq Şuşaya daxil olan şanlı və qorxmaz Azərbaycan hərbçilərindən idi. Şahlar Məmmədov 8 noyabr 2020-ci ildə Şuşanın tam azadlığı uğrunda gedən döyüşlərdə qəhrəmancasına şəhid olmuşdur. Onun müqəddəs nəşi doğulduğu Neftçala rayonunun Ərəbqardaşbəyli kənd qəbiristanlığında dəfn edilmişdir. Vətən uğrundakı göstərdiyi müstəsna qəhrəmanlığa görə ölümündən sonra dövlətimiz tərəfindən mükafatlandırılıb.`,
+                link: "https://unudulmazlar.az/az/infom/3705"
+            },
+            {
+                ad: "Altun Məmmədov Nüsrət",
+                metn: `Altun Məmmədov Nüsrət oğlu Azərbaycan Silahlı Qüvvələrinin cəsur əsgəri və qəhrəman şəhididir. O, vətənin müdafiəsinə hər zaman hazır olan, əsgəri borcunu şərəflə daşıyan dəyərli gənclərimizdən idi. 27 sentyabr 2020-ci ildə başlayan İkinci Qarabağ müharibəsində ilk günlərdən silaha sarılmışdır. Ermənistanın işğalı altında olan ərazilərin azad edilməsi əməliyyatlarında qorxmadan, cəsarətlə iştirak etmişdir. Altun xüsusilə Füzuli rayonu istiqamətindəki cəbhə xəttində yoldaşları ilə bərabər rəşadətlə vuruşurdu. O, düşmənin canlı qüvvəsinin və bir çox texnikasının məhv edilməsində önəmli tapşırıqları uğurla icra edib. Döyüş meydanında bir addım belə geri çəkilmədən, son qanına qədər torpaqlarımızın azadı üçün mübarizə aparmışdır. 2 oktyabr 2020-ci ildə Füzuli istiqamətindəki şiddətli döyüşlərdə qəhrəmancasına şəhidlik zirvəsinə ucalmışdır. Şəhidimizin nəşi Gəncə şəhərinə gətirilərək oradakı Şəhidlər Xiyabanında böyük ehtiramla torpağa tapşırılmışdır. Altunun şanlı döyüş yolu dövlətimiz tərəfindən qiymətləndirilərək ölümündən sonra müxtəlif fəxri medallarla təltif olunmuşdur.`,
+                link: "https://unudulmazlar.az/az/infom/6126"
+            }
+        ];
+
+        /* ===== Aşağıdakı hissəyə toxunmaq lazım deyil ===== */
+
+        const AYLAR = ["yanvar", "fevral", "mart", "aprel", "may", "iyun",
+                       "iyul", "avqust", "sentyabr", "oktyabr", "noyabr", "dekabr"];
+        const GUN_SAYI = 44;
+
+        // 1-ci gün = 27 sentyabr 2020
+        function avtoTarix(n) {
+            const d = new Date(2020, 8, 27 + n - 1);
+            return d.getDate() + " " + AYLAR[d.getMonth()] + " " + d.getFullYear();
+        }
+
+        // 44 günün hamısı üçün məlumat obyekti
+        const GUNLER = [];
+        for (let n = 1; n <= GUN_SAYI; n++) {
+            GUNLER.push(Object.assign({
+                gun: n,
+                tarix: avtoTarix(n),
+                yazi: "",
+                sekiller: [],
+                videolar: [],
+                youtube: []
+            }, MELUMAT[n] || {}));
+        }
+
+        const yol = document.getElementById("yol");
+        const perde = document.getElementById("perde");
+        const pencere = document.getElementById("pencere");
+
+        // Xanaları düz: 44-cü gün yuxarıda, 1-ci gün ən aşağıda
+        for (let i = GUNLER.length - 1; i >= 0; i--) {
+            const g = GUNLER[i];
+
+            const xana = document.createElement("div");
+            xana.className = "xana";
+
+            const gun = document.createElement("div");
+            gun.className = "gun";
+            gun.textContent = g.gun + "-ci GÜN";
+
+            const tarix = document.createElement("div");
+            tarix.className = "tarix";
+            tarix.textContent = g.tarix;
+
+            xana.appendChild(gun);
+            xana.appendChild(tarix);
+
+            // İlham Əliyevin sözü (varsa) xananın kənar tərəfində (otluğa doğru)
+            const s = SOZLER[g.gun];
+            if (s) {
+                const solda = ((GUNLER.length - g.gun + 1) % 2 === 1);   // tək sıra = sol xana
+                const q = document.createElement("div");
+                q.className = "quote-box " + (solda ? "sol" : "sag");
+
+                const m = document.createElement("span");
+                m.className = "quote-mark"; m.textContent = "\u201C";
+                const t = document.createElement("p");
+                t.className = "quote-text"; t.textContent = s.metn;
+                const d = document.createElement("span");
+                d.className = "quote-date"; d.textContent = s.tarix;
+
+                q.appendChild(m); q.appendChild(t); q.appendChild(d);
+                xana.appendChild(q);
+                xana.classList.add("ile-soz");
+            }
+
+            xana.addEventListener("click", function (e) { ach(g, e); });
+            yol.appendChild(xana);
+        }
+
+        // Video qutusu: üstünə basanda dayanır/oynayır, düymələr: oynat, irəli-geri, səs, tam ekran
+        function videoQutu(src) {
+            const qutu = document.createElement("div");
+            qutu.className = "video-qutu";
+
+            const v = document.createElement("video");
+            v.src = encodeURI(src);          // "SEHID VIDEO" kimi boşluqlu qovluq adı üçün
+            v.preload = "auto";
+            v.playsInline = true;
+            qutu.appendChild(v);
+
+            const bar = document.createElement("div");
+            bar.className = "v-bar";
+
+            const bPlay = document.createElement("button");
+            bPlay.textContent = "❚❚";
+            bPlay.title = "Dayandır / oynat";
+
+            const zaman = document.createElement("input");
+            zaman.type = "range";
+            zaman.min = 0; zaman.max = 1000; zaman.value = 0;
+
+            const bSes = document.createElement("button");
+            bSes.textContent = "🔊";
+            bSes.title = "Səs";
+
+            const bTam = document.createElement("button");
+            bTam.textContent = "⛶ Tam ekran";
+            bTam.title = "Tam ekran / kiçilt";
+
+            bar.appendChild(bPlay);
+            bar.appendChild(zaman);
+            bar.appendChild(bSes);
+            bar.appendChild(bTam);
+            qutu.appendChild(bar);
+
+            function oynatDayandir() {
+                if (v.paused) { v.play().catch(function () {}); } else { v.pause(); }
+            }
+            v.addEventListener("click", oynatDayandir);   // videonun üstünə basanda
+            bPlay.addEventListener("click", oynatDayandir);
+            v.addEventListener("play",  function () { bPlay.textContent = "❚❚"; });
+            v.addEventListener("pause", function () { bPlay.textContent = "▶"; });
+
+            v.addEventListener("timeupdate", function () {
+                if (v.duration) zaman.value = (v.currentTime / v.duration) * 1000;
+            });
+            zaman.addEventListener("input", function () {
+                if (v.duration) v.currentTime = (zaman.value / 1000) * v.duration;
+            });
+
+            bSes.addEventListener("click", function () {
+                v.muted = !v.muted;
+                bSes.textContent = v.muted ? "🔇" : "🔊";
+            });
+
+            bTam.addEventListener("click", function () {
+                if (document.fullscreenElement === qutu) {
+                    document.exitFullscreen();
+                } else if (qutu.requestFullscreen) {
+                    qutu.requestFullscreen();
+                } else if (v.webkitEnterFullscreen) {   // iPhone
+                    v.webkitEnterFullscreen();
+                }
+            });
+            document.addEventListener("fullscreenchange", function () {
+                bTam.textContent = (document.fullscreenElement === qutu) ? "✕ Kiçilt" : "⛶ Tam ekran";
+            });
+
+            return qutu;
+        }
+
+        function ach(g, e) {
+            perde.classList.remove("seffaf");
+            pencere.classList.remove("seffaf");
+            document.getElementById("m-bashliq").textContent = g.gun + "-ci gün";
+            document.getElementById("m-tarix").textContent = g.tarix;
+            document.getElementById("m-yazi").textContent = g.yazi;
+            document.getElementById("m-link").innerHTML = "";
+
+            const sh = document.getElementById("m-sehid");
+            sh.innerHTML = "";
+            if (g.sehid) {
+                const e = document.createElement("div"); e.className = "etiket"; e.textContent = "Bu gün şəhid olan qəhrəman";
+                const a = document.createElement("div"); a.className = "ad"; a.textContent = g.sehid.ad;
+                const m = document.createElement("div"); m.textContent = g.sehid.metn;
+                const duzen = document.createElement("div");
+                duzen.className = "sehid-duzen";
+
+                const metn = document.createElement("div");
+                metn.appendChild(e); metn.appendChild(a); metn.appendChild(m);
+                duzen.appendChild(metn);
+
+                // Video: SEHID VIDEO qovluğunda gün nömrəsi ilə (məs. 22.mp4)
+                const vq = videoQutu("SEHID VIDEO/" + g.gun + ".mp4");
+                vq.querySelector("video").addEventListener("error", function () {
+                    vq.style.display = "none";          // video tapılmasa gizlənir
+                    duzen.classList.add("videosuz");
+                });
+                duzen.appendChild(vq);
+
+                sh.appendChild(duzen);
+                sh.style.display = "block";
+            } else {
+                sh.style.display = "none";
+            }
+
+            const media = document.getElementById("m-media");
+            media.innerHTML = "";
+
+            g.sekiller.forEach(function (src) {
+                const img = document.createElement("img");
+                img.src = src;
+                img.alt = g.gun + "-ci gün şəkli";
+                media.appendChild(img);
+            });
+
+            g.videolar.forEach(function (src) {
+                const v = document.createElement("video");
+                v.src = src;
+                v.controls = true;
+                media.appendChild(v);
+            });
+
+            g.youtube.forEach(function (id) {
+                const f = document.createElement("iframe");
+                f.src = "https://www.youtube.com/embed/" + id;
+                f.allowFullscreen = true;
+                media.appendChild(f);
+            });
+
+            // Pəncərə basılan xananın yerindən böyüsün
+            pencere.style.transformOrigin = e.clientX + "px " + e.clientY + "px";
+            pencere.scrollTop = 0;
+            perde.classList.add("ach");
+            document.body.style.overflow = "hidden";
+
+            // Pəncərə açılan kimi şəhid videosu avtomatik oxunur
+            const sv = sh.querySelector("video");
+            if (sv) {
+                sv.currentTime = 0;
+                sv.play().catch(function () {
+                    // Brauzer səsli avtomatik oxumağa icazə verməsə, səssiz başlayır
+                    sv.muted = true;
+                    sv.play().catch(function () {});
+                });
+            }
+        }
+
+        function bagla() {
+            perde.classList.remove("ach");
+            document.body.style.overflow = "";
+            // Açıq videoları dayandır və sil
+            document.getElementById("m-link").innerHTML = "";
+            if (document.fullscreenElement) document.exitFullscreen();
+            document.getElementById("m-media").innerHTML = "";
+            document.getElementById("m-sehid").innerHTML = "";
+        }
+
+        // Yolu yığ / aç
+        const sayt = document.getElementById("sayt");
+
+        // Yol açılanda ən aşağıdan, 1-ci gündən başlayırıq (yuxarı getdikcə 44-cü günə çatırıq)
+        function gun1eGet() {
+            const birinci = yol.lastElementChild;     // ən aşağıdakı xana = 1-ci gün
+            if (birinci) birinci.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        /* ===== Daşlar: yolun solunda və sağında, xanalarla üst-üstə düşmədən ===== */
+        const qat = document.getElementById("dasQat");
+
+        function mulberry32(a) {                 // sabit "təsadüfi" ədədlər: hər açılışda eyni yer
+            return function () {
+                a |= 0; a = (a + 0x6D2B79F5) | 0;
+                let t = Math.imul(a ^ (a >>> 15), 1 | a);
+                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            };
+        }
+
+        function sehidAch(sh, e) {
+            perde.classList.add("seffaf");
+            pencere.classList.add("seffaf");
+            document.getElementById("m-bashliq").textContent = sh.ad;
+            document.getElementById("m-tarix").textContent = "Vətən müharibəsi şəhidi";
+            document.getElementById("m-yazi").textContent = sh.metn;
+
+            const blok = document.getElementById("m-sehid");
+            blok.innerHTML = ""; blok.style.display = "none";
+            document.getElementById("m-media").innerHTML = "";
+
+            const lk = document.getElementById("m-link");
+            lk.innerHTML = "";
+            if (sh.link) {
+                const a = document.createElement("a");
+                a.className = "daha-chox";
+                a.href = sh.link;
+                a.target = "_blank";
+                a.rel = "noopener noreferrer";
+                a.textContent = "Daha çox \u2192";
+                lk.appendChild(a);
+            }
+
+            pencere.style.transformOrigin = e.clientX + "px " + e.clientY + "px";
+            pencere.scrollTop = 0;
+            perde.classList.add("ach");
+            document.body.style.overflow = "hidden";
+        }
+
+        function dasYerlesdir() {
+            if (sayt.classList.contains("yigiq")) return;    // yığıq halda ölçü yoxdur
+            const yr = yol.getBoundingClientRect();
+            const W = yr.width, H = yr.height;
+            if (!W || !H) return;
+
+            qat.style.height = H + "px";
+            qat.innerHTML = "";
+
+            // Toxunulmaz sahələr: gün xanaları və İlham Əliyevin söz qutuları
+            const qadagan = [];
+            yol.querySelectorAll(".xana, .quote-box").forEach(function (el) {
+                const r = el.getBoundingClientRect();
+                qadagan.push({ x: r.left - yr.left, y: r.top - yr.top, w: r.width, h: r.height });
+            });
+
+            const rng = mulberry32(2020);
+            const s = Math.max(46, Math.min(110, W * 0.055));      // daşın ölçüsü
+            const merkez = W / 2;
+            const yolYarim = W * 0.10;                              // yolun yarım eni (daş yola düşməsin)
+            const kenar = Math.max(6, W * 0.015);
+            const yuxari = 30, asagi = H - s - 40;
+            const zona = {
+                sol: [kenar, merkez - yolYarim - s],
+                sag: [merkez + yolYarim, W - kenar - s]
+            };
+            const bantSayi = Math.ceil(SEHIDLER.length / 2);        // hər tərəfdə 6 daş
+            const bantH = (asagi - yuxari) / bantSayi;
+            const yerlesen = [];
+
+            function toqqusur(x, y, bosluq) {
+                const hamisi = qadagan.concat(yerlesen);
+                for (let i = 0; i < hamisi.length; i++) {
+                    const b = hamisi[i];
+                    if (x < b.x + b.w + bosluq && x + s > b.x - bosluq &&
+                        y < b.y + b.h + bosluq && y + s > b.y - bosluq) return true;
+                }
+                return false;
+            }
+
+            function yerTap(z, bant) {
+                if (z[1] <= z[0]) return null;
+                const bosluqlar = [16, 8, 0];
+                for (let b = 0; b < bosluqlar.length; b++) {
+                    for (let t = 0; t < 200; t++) {
+                        const dar = t < 80;       // əvvəl öz zolağında axtar, sonra bütün yolda
+                        const y = dar ? yuxari + bant * bantH + rng() * bantH
+                                      : yuxari + rng() * (asagi - yuxari);
+                        const x = z[0] + rng() * (z[1] - z[0]);
+                        if (!toqqusur(x, y, bosluqlar[b])) return { x: x, y: y };
+                    }
+                }
+                return null;
+            }
+
+            SEHIDLER.forEach(function (sh, i) {
+                const terefSol = (i % 2 === 0);
+                const k = Math.floor(i / 2);
+                const yer = yerTap(terefSol ? zona.sol : zona.sag, k);
+                if (!yer) return;
+
+                const d = DASLAR[(k + (terefSol ? 0 : 2)) % DASLAR.length];
+                const b = document.createElement("button");
+                b.type = "button";
+                b.className = "das";
+                b.title = sh.ad;
+                b.style.left = yer.x + "px";
+                b.style.top = yer.y + "px";
+                b.style.width = s + "px";
+                b.style.height = s + "px";
+                b.style.rotate = (rng() * 24 - 12).toFixed(1) + "deg";
+                if (d.blend) b.style.mixBlendMode = d.blend;
+
+                const im = document.createElement("img");
+                im.src = d.src;
+                im.alt = "Şəhid xatirəsi daşı";
+                im.draggable = false;
+                im.addEventListener("error", function () { b.style.display = "none"; });
+                b.appendChild(im);
+
+                b.addEventListener("click", function (e) { sehidAch(sh, e); });
+                qat.appendChild(b);
+                yerlesen.push({ x: yer.x, y: yer.y, w: s, h: s });
+            });
+        }
+
+        let dasTaymer = null;
+        window.addEventListener("resize", function () {
+            clearTimeout(dasTaymer);
+            dasTaymer = setTimeout(dasYerlesdir, 150);
+        });
+
+        // "Yolu yığ": yol gizlənir, yalnız "Yolu aç" düyməsi qalır
+        document.getElementById("yigBtn").addEventListener("click", function () {
+            sayt.classList.add("yigiq");
+            document.getElementById("achBtn").scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        // "Yolu aç": yol açılır və 1-ci günə aparır
+        document.getElementById("achBtn").addEventListener("click", function () {
+            sayt.classList.remove("yigiq");
+            dasYerlesdir();
+            gun1eGet();
+        });
+
+        document.getElementById("bagla").addEventListener("click", bagla);
+        perde.addEventListener("click", function (e) {
+            if (e.target === perde) bagla();       // pəncərədən kənara basanda bağlanır
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") bagla();
+        });
+    </script>
+
+</body>
+</html>

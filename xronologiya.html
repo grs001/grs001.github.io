@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azad olunan ərazilər · Xronologiya</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    min-height: 100vh; color: #f1e8d8; font-family: Georgia, "Times New Roman", serif; background-color: #14100c;
+}
+/* Arxa fon qatları (telefonda da sabit qalır): 1) fon2 dağlıq şəkli  2) üstündə əsgərlər şəkli */
+.fon { position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background-image: linear-gradient(rgba(10,8,6,.35), rgba(10,8,6,.35)), url("fon2.jpg"), url("fon2.jpeg"), url("fon2.png"), url("fon2.webp");
+    background-size: cover; background-position: center; }
+.fon-eskerler { position: fixed; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+    width: clamp(300px, 56vw, 1050px); }   /* ölçü: 56vw = ekranın 56%-i. Kiçiltmək üçün azaldın */
+.fon-eskerler img { display: block; width: 100%; height: auto;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 22%); mask-image: linear-gradient(to right, transparent 0%, #000 22%); }
+
+.bash-zolaq { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 0 clamp(12px, 3vw, 48px); height: clamp(48px, 4vw, 72px); background: #1e1812; border-bottom: 3px solid #e8c660; box-shadow: 0 3px 10px rgba(0,0,0,.4); }
+.logo { color: #fff; font-size: clamp(18px, 1.8vw, 30px); font-weight: bold; letter-spacing: .04em; text-decoration: none; white-space: nowrap; }
+.logo span { color: #e8c660; }
+.bash-zolaq nav { display: flex; gap: clamp(10px, 2vw, 36px); }
+.bash-zolaq nav a { color: #f1e8d8; font-size: clamp(12px, 1.2vw, 20px); text-decoration: none; padding: 6px 2px; border-bottom: 2px solid transparent; transition: .2s; }
+.bash-zolaq nav a:hover, .bash-zolaq nav a.aktiv { color: #e8c660; border-bottom-color: #e8c660; }
+
+.bashliq { text-align: center; padding: clamp(24px, 4vw, 56px) 16px clamp(14px, 2vw, 26px); }
+.bashliq h1 { color: #fff; font-size: clamp(28px, 5vw, 78px); letter-spacing: .03em; }
+.bashliq p { margin-top: 8px; color: #e8c660; font-size: clamp(12px, 1.5vw, 24px); letter-spacing: .14em; font-weight: bold; }
+
+/* ===== Lent ===== */
+.lent-yer { width: min(1500px, 100%); margin: 0 auto; padding: 0 clamp(8px, 2vw, 24px); }
+.lent { position: relative; display: flex; overflow-x: auto; scrollbar-width: none; padding: 10px 0; }
+.lent::-webkit-scrollbar { display: none; }
+.lent button {
+    flex: 0 0 auto; position: relative; margin-right: -14px; padding: 14px 30px 14px 38px; font-family: inherit; font-size: clamp(14px, 1.3vw, 20px); font-weight: bold;
+    color: #f1e8d8; background: #3d4f5c; border: none; cursor: pointer; white-space: nowrap; transition: background .3s, color .3s, transform .3s;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%, 18px 50%);
+}
+.lent button:first-child { padding-left: 24px; clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%); }
+.lent button small { display: block; font-size: .65em; letter-spacing: .15em; opacity: .7; font-weight: normal; }
+.lent button:hover { background: #4d6372; }
+.lent button.aktiv { background: #e8c660; color: #1e1812; z-index: 2; transform: scale(1.06); }
+
+/* ===== Şəkillər (sağa-sola sürüşdürülür) ===== */
+.sahne { position: relative; }
+.zolaq {
+    --kw: min(74vw, 440px);
+    position: relative; display: flex; gap: clamp(14px, 2.4vw, 36px); overflow-x: auto; padding: 26px calc((100% - var(--kw)) / 2) 22px;
+    scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.zolaq::-webkit-scrollbar { display: none; }
+.zolaq.surur { scroll-snap-type: none; cursor: grabbing; }
+.zolaq.surur .kart { pointer-events: none; }
+.kart { flex: 0 0 var(--kw); scroll-snap-align: center; scroll-snap-stop: always; position: relative; cursor: pointer;
+    opacity: .45; transform: scale(.86); transition: opacity .35s, transform .35s; user-select: none; -webkit-user-select: none; }
+.kart.aktiv { opacity: 1; transform: scale(1); }
+.kart img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: contain; background: none; -webkit-user-drag: none; }
+.kart .alt { padding: 12px 16px 0; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,.8); }
+.kart .alt b { display: block; color: #fff; font-size: clamp(20px, 2.4vw, 32px); }
+.kart .alt span { color: #e8c660; font-size: clamp(12px, 1.1vw, 15px); letter-spacing: .08em; }
+
+.ox { position: absolute; top: 50%; transform: translateY(-50%); z-index: 5; width: 48px; height: 48px; border-radius: 50%; border: 3px solid #e8c660; background: #1e1812; color: #fff; font-size: 26px; line-height: 1; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.ox:hover { box-shadow: 0 0 16px rgba(232,198,96,.9); }
+.ox.sol { left: clamp(6px, 2vw, 30px); } .ox.sag { right: clamp(6px, 2vw, 30px); }
+@media (max-width: 700px) { .ox { display: none; } }
+
+.say { text-align: center; padding: 4px 16px 60px; color: #bdb3a2; font-size: 15px; letter-spacing: .08em; }
+
+/* ===== Məlumat pəncərəsi ===== */
+.perde { position: fixed; inset: 0; z-index: 1000; background: rgba(10,8,6,.30); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 16px;
+    opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+.perde.ach { opacity: 1; visibility: visible; }
+.pencere { position: relative; width: min(1000px, 100%); max-height: 92vh; max-height: 92dvh; overflow-y: auto; background: transparent; border: none; border-radius: 12px; text-shadow: 0 1px 6px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.6);
+    padding: clamp(20px, 3vw, 40px); transform: scale(.15); transition: transform .3s ease-out; }
+.perde.ach .pencere { transform: scale(1); }
+.bagla { position: absolute; top: 10px; right: 16px; background: none; border: none; color: #fff; font-size: 36px; line-height: 1; cursor: pointer; z-index: 2; }
+.p-ust { display: grid; grid-template-columns: minmax(180px, 340px) 1fr; gap: clamp(18px, 3vw, 36px); align-items: start; }
+@media (max-width: 700px) { .p-ust { grid-template-columns: 1fr; } }
+.p-ust img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: contain; filter: drop-shadow(0 6px 18px rgba(0,0,0,.55)); }
+.pencere h2 { color: #e8c660; font-size: clamp(26px, 3.4vw, 46px); line-height: 1.15; padding-right: 30px; }
+.p-tarix { margin: 8px 0 16px; color: #bdb3a2; font-size: clamp(15px, 1.4vw, 20px); }
+.p-yazi { font-size: clamp(15px, 1.3vw, 19px); line-height: 1.7; white-space: pre-line; }
+.bolme { margin-top: 26px; }
+.bolme-bash { background: rgba(61,79,92,.55); color: #fff; text-align: center; font-weight: bold; padding: 8px 12px; font-size: clamp(15px, 1.4vw, 20px); }
+.setir { display: grid; grid-template-columns: minmax(130px, 220px) 1fr; gap: 6px 20px; padding: 12px 6px; border-bottom: 1px solid rgba(232,198,96,.18); font-size: clamp(15px, 1.3vw, 19px); line-height: 1.5; }
+.setir b { color: #fff; } .setir span { color: #e9dfcb; white-space: pre-line; }
+@media (max-width: 560px) { .setir { grid-template-columns: 1fr; gap: 2px; } }
+</style>
+</head>
+<body>
+
+<div class="fon"></div>
+<div class="fon-eskerler"><img src="askerler.png" alt=""></div>
+
+<header class="bash-zolaq">
+    <a class="logo" href="index.html">Zəfər <span>Yolu</span></a>
+    <nav>
+        <a href="index.html">Ana səhifə</a>
+        <a href="xronologia.html" class="aktiv">Xronologiya</a>
+    </nav>
+</header>
+
+<div class="bashliq">
+    <h1>Azad olunan ərazilər</h1>
+    <p>XRONOLOGİYA · ƏRAZİ BÜTÖVLÜYÜMÜZÜN BƏRPASI</p>
+</div>
+
+<div class="lent-yer"><div class="lent" id="lent"></div></div>
+
+<div class="sahne">
+    <button class="ox sol" id="sol" aria-label="Əvvəlki">&#8249;</button>
+    <div class="zolaq" id="zolaq"></div>
+    <button class="ox sag" id="sag" aria-label="Sonrakı">&#8250;</button>
+</div>
+<div class="say" id="say"></div>
+
+<div class="perde" id="perde">
+    <div class="pencere">
+        <button class="bagla" id="bagla" aria-label="Bağla">&times;</button>
+        <div class="p-ust">
+            <img id="p-sekil" alt="">
+            <div>
+                <h2 id="p-ad"></h2>
+                <div class="p-tarix" id="p-tarix"></div>
+                <div class="p-yazi" id="p-yazi"></div>
+            </div>
+        </div>
+        <div id="p-bolme"></div>
+    </div>
+</div>
+
+<script>
+/* =====================================================
+   Əlavə etmək üçün: hər ərazi üçün tarix, metn və melumat doldurun.
+   Sıra xronoloji sıradır (azad olunma tarixinə görə), lazım olsa yerlərini dəyişin.
+   Şəkillər: erazi2/<ad>.png
+   ===================================================== */
+const SEKIL_QOVLUQ = "erazi2/";
+const ERAZILER = [
+    { ad: "Cəbrayıl",  tarix: "04.10.2020", metn: "", melumat: [] },
+    { ad: "Füzuli",    tarix: "17.10.2020", metn: "", melumat: [] },
+    { ad: "Zəngilan",  tarix: "20.10.2020", metn: "", melumat: [] },
+    { ad: "Qubadlı",   tarix: "25.10.2020", metn: "", melumat: [] },
+    { ad: "Şuşa",      tarix: "08.11.2020", metn: "", melumat: [] },
+    { ad: "Xocavənd",  tarix: "10.11.2020", metn: "", melumat: [] },
+    { ad: "Xankəndi",  tarix: "10.11.2020", metn: "", melumat: [] },
+    { ad: "Xocalı",    tarix: "10.11.2020", metn: "", melumat: [] },
+    { ad: "Ağdam",     tarix: "20.11.2020", metn: "", melumat: [] },
+    { ad: "Kəlbəcər",  tarix: "25.11.2020", metn: "", melumat: [] },
+    { ad: "Laçın",     tarix: "01.12.2020", metn: "", melumat: [] }
+    /* melumat nümunəsi: [["Azad olunma tarixi", "..."], ["Əhəmiyyəti", "..."]] */
+];
+
+/* ===== Ərazi məlumatları xronologiyamelumat.txt faylından oxunur =====
+   Faylın formatı: hər ərazi ayrı sətirdə  **Ağdam:** mətn...
+   Ərazinin adı yuxarıdakı ERAZILER siyahısındakı adla eyni olmalıdır. */
+const MELUMAT_FAYL = "xronologiyamelumat.txt";
+function norm(t) {
+    return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/ə/g, "e").replace(/ı/g, "i").replace(/\s+/g, " ").trim();
+}
+/* uzun mətni oxumaq asan olsun deyə hər 3 cümləni ayrı abzasa bölür */
+function abzaslar(t) {
+    const c = t.split(/(?<=[.!?])\s+/), out = [];
+    for (let i = 0; i < c.length; i += 3) out.push(c.slice(i, i + 3).join(" "));
+    return out.join("\n\n");
+}
+fetch(MELUMAT_FAYL, { cache: "no-cache" })
+    .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+    .then(function (t) {
+        const m = {};
+        t.replace(/^\uFEFF/, "").split(/\r?\n/).forEach(function (setir) {
+            const x = setir.match(/^\s*\**\s*([^:*]{1,40}?)\s*:\s*\**\s*(.+)$/);
+            if (x) m[norm(x[1])] = abzaslar(x[2].trim());
+        });
+        ERAZILER.forEach(function (e) { if (m[norm(e.ad)]) e.metn = m[norm(e.ad)]; });
+    })
+    .catch(function () {
+        if (location.protocol === "file:") {
+            ERAZILER.forEach(function (e) {
+                if (!e.metn) e.metn = "Məlumat faylı (" + MELUMAT_FAYL + ") brauzerdə birbaşa açılan faylda oxunmur. Saytı hostinqə yükləyin və ya VS Code-da \"Live Server\" ilə açın.";
+            });
+        }
+    });
+
+const BOSH = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="none"/></svg>');
+const lent = document.getElementById("lent"), zolaq = document.getElementById("zolaq"), sayEl = document.getElementById("say");
+const yol = function (e) { return SEKIL_QOVLUQ + encodeURIComponent(e.ad) + ".png"; };
+let aktiv = -1;
+
+ERAZILER.forEach(function (e, i) {
+    const d = document.createElement("button");
+    d.innerHTML = "<small>" + String(i + 1).padStart(2, "0") + "</small>" + e.ad;
+    d.onclick = function () { get(i); };
+    lent.appendChild(d);
+
+    const k = document.createElement("article");
+    k.className = "kart";
+    k.innerHTML = '<img alt=""><div class="alt"><b></b><span></span></div>';
+    const im = k.querySelector("img");
+    im.alt = e.ad; im.onerror = function () { im.onerror = null; im.src = BOSH; }; im.src = yol(e);
+    k.querySelector("b").textContent = e.ad;
+    k.querySelector("span").textContent = e.tarix || "Ətraflı məlumat üçün klik edin";
+    k.onclick = function () { ach(i); };
+    zolaq.appendChild(k);
+});
+
+function mərkəz(sc, el) { return el.offsetLeft + el.offsetWidth / 2 - sc.clientWidth / 2; }
+function get(i) { i = Math.max(0, Math.min(ERAZILER.length - 1, i)); zolaq.scrollTo({ left: mərkəz(zolaq, zolaq.children[i]), behavior: "smooth" }); }
+
+function teyin(i) {
+    if (i === aktiv) return;
+    aktiv = i;
+    Array.prototype.forEach.call(zolaq.children, function (k, j) { k.classList.toggle("aktiv", j === i); });
+    Array.prototype.forEach.call(lent.children, function (d, j) { d.classList.toggle("aktiv", j === i); });
+    lent.scrollTo({ left: mərkəz(lent, lent.children[i]), behavior: "smooth" });
+    sayEl.textContent = (i + 1) + " / " + ERAZILER.length;
+}
+let bos = false;
+function yoxla() {
+    bos = false;
+    const m = zolaq.scrollLeft + zolaq.clientWidth / 2; let en = 0, fark = 1e9;
+    Array.prototype.forEach.call(zolaq.children, function (k, j) {
+        const f = Math.abs(k.offsetLeft + k.offsetWidth / 2 - m); if (f < fark) { fark = f; en = j; }
+    });
+    teyin(en);
+}
+zolaq.addEventListener("scroll", function () { if (!bos) { bos = true; requestAnimationFrame(yoxla); } }, { passive: true });
+window.addEventListener("resize", function () { get(Math.max(aktiv, 0)); });
+document.getElementById("sol").onclick = function () { get(aktiv - 1); };
+document.getElementById("sag").onclick = function () { get(aktiv + 1); };
+
+/* siçanla tutub sürüşdürmə (telefonda öz sürüşdürməsi işləyir) */
+let basdi = false, baslangic = 0, bas0 = 0, hereket = false;
+zolaq.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; basdi = true; hereket = false; baslangic = e.clientX; bas0 = zolaq.scrollLeft; });
+window.addEventListener("pointermove", function (e) {
+    if (!basdi) return;
+    const f = e.clientX - baslangic;
+    if (Math.abs(f) > 6) { hereket = true; zolaq.classList.add("surur"); }
+    if (hereket) zolaq.scrollLeft = bas0 - f;
+});
+window.addEventListener("pointerup", function () {
+    if (!basdi) return; basdi = false;
+    if (hereket) { zolaq.classList.remove("surur"); yoxla(); get(aktiv); setTimeout(function () { hereket = false; }, 0); }
+});
+zolaq.addEventListener("click", function (e) { if (hereket) { e.stopPropagation(); e.preventDefault(); } }, true);
+
+/* ===== Məlumat pəncərəsi ===== */
+const perde = document.getElementById("perde");
+function ach(i) {
+    const e = ERAZILER[i];
+    document.getElementById("p-sekil").src = zolaq.children[i].querySelector("img").src;
+    document.getElementById("p-ad").textContent = e.ad;
+    document.getElementById("p-tarix").textContent = e.tarix || "";
+    document.getElementById("p-yazi").textContent = e.metn || "Məlumat tezliklə əlavə olunacaq.";
+    const yer = document.getElementById("p-bolme"); yer.innerHTML = "";
+    if (e.melumat && e.melumat.length) {
+        const b = document.createElement("div"); b.className = "bolme";
+        b.innerHTML = '<div class="bolme-bash">Məlumat</div>';
+        e.melumat.forEach(function (p) {
+            const s = document.createElement("div"); s.className = "setir";
+            const x = document.createElement("b"); x.textContent = p[0];
+            const y = document.createElement("span"); y.textContent = p[1];
+            s.appendChild(x); s.appendChild(y); b.appendChild(s);
+        });
+        yer.appendChild(b);
+    }
+    perde.classList.add("ach"); perde.querySelector(".pencere").scrollTop = 0; document.body.style.overflow = "hidden";
+}
+function bagla() { perde.classList.remove("ach"); document.body.style.overflow = ""; }
+document.getElementById("bagla").onclick = bagla;
+perde.addEventListener("click", function (e) { if (e.target === perde) bagla(); });
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") bagla();
+    else if (!perde.classList.contains("ach")) {
+        if (e.key === "ArrowLeft") get(aktiv - 1); else if (e.key === "ArrowRight") get(aktiv + 1);
+    }
+});
+
+teyin(0); get(0);
+</script>
+</body>
+</html>
